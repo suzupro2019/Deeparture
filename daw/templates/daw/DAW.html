@@ -1,0 +1,284 @@
+{% load static %}
+
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title>Deeparture</title>
+    <!--CSSはstyle_DAW.cssに集約-->
+    <link rel="stylesheet" type="text/css" href="{% static 'daw/css/style_DAW.css' %}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+
+    <!--jsは各ファイルに分ける 基本的に各部品ごとに名称をつける ex seekbar.js-->
+    <!--共用部分(jqueryなど)-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!--グローバル変数-->
+    <script type="text/javascript">
+      var play_flg = 0;
+      var MIDI_Melody = [];
+      var chord_stroke = {};
+      var drum_pattern = {};
+
+      const token = '{{ csrf_token }}';  // CSRF対策
+      const index = "{% url 'index' %}";  // ページ遷移時に使用
+
+      // データの取得
+      // メロディデータの取り出し
+      var melody = {{ project.melody_data|default:'[]'|safe }};
+      // メロディの取り出し確認用
+      console.log(melody);
+      // パス名から新規作成or更新を判断する
+      if(location.pathname == "{% url 'daw_new' %}") {
+        // 新規作成画面での処理
+        var artist = window.sessionStorage.getItem('artist');
+        var key = window.sessionStorage.getItem('key');
+        var rhythm_pattern = window.sessionStorage.getItem('rhythm_pattern');
+        var chord_prog = window.sessionStorage.getItem('chord_prog');
+        var bpm = parseInt(window.sessionStorage.getItem('bpm'));
+      } else {
+        // 更新画面での処理
+        var project_id = "{{ project.id }}";
+        var project_name = "{{ project.project_name }}";
+        var artist = "{{ project.artist }}";
+        var key = "{{ project.key }}";
+        var rhythm_pattern = "{{ project.rhythm_pattern }}";
+        var chord_prog = "{{ project.chord_prog }}";
+        var bpm = parseInt("{{ project.bpm }}");
+      }
+      // 確認用
+      console.log('artist: ' + artist);
+      console.log('key: ' + key);
+      console.log('rhythm_pattern: ' + rhythm_pattern);
+      console.log('chord_prog: ' + chord_prog);
+      console.log('bpm: ' + bpm);
+      console.log(typeof(bpm));
+      </script>
+      <!--以下inst_bar-->
+      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+      <script type="text/javascript" src="{% static 'daw/js/instbar.js' %}"></script>
+      <script src="{% static 'daw/js/input-knobs.js' %}"></script>
+      <!--以下MIDIinput-->
+      <script src="{% static 'daw/js/rhythm_pattern.js' %}"></script>
+      <script type="text/javascript" src="{% static 'daw/js/MIDIinput.js' %}"></script>
+      <script src="{% static 'daw/js/tone.js' %}"></script>
+  </head>
+  <boby>
+    <div class="main">
+      <div class="menu_bar">
+        <!--左-->
+        <div class="save-button">
+          <p id="save"><i class="far fa-save fa-fw"></i></p>
+        </div>
+
+        <div class="help-button">
+          <p id="help"><i class="far fa-question-circle fa-fw"></i></p>
+        </div>
+        <div class="back-button">
+          <p id="back"><i class="fas fa-directions"></i></p>
+        </div>
+
+        <!--真ん中-->
+        <div class="saisei">
+          <p id ="backward"><i class="fas fa-fast-backward"></i></p>
+          <p id ="play">
+            <span class="play-btn"><i class="fas fa-play"></i></span>
+            <span class="stop-btn"><i class="far fa-square"></i></span>
+          </p>
+        </div>
+
+        <!--右-->
+        <div class="select">
+          <table cellpadding="0" cellspacing="1" align="right">
+            <tr>
+              <td class="exbar">
+                <p class="gr"></p>
+                <p class="wh">bar</p>
+              </td>
+              <td>
+                <p class="gr bpm_value"></p>
+                <input class="bpm_slider" type="range" value="120" max="240" min="40" autocomplete="off">
+                <p class="wh">bpm</p>
+              </td>
+              <td class="extime">
+                <p class="gr"></p>
+                <p class="wh">time</p>
+              </td>
+              <td>
+                <p class="gr key"></p>
+                <p class="wh">key</p>
+              </td>
+              <td class="exartist">
+                <p class="gr artist"></p>
+                <p class="wh">artist</p>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <!--スケールバー-->
+        <div class="scale_bar">
+          <label class="width_scale">
+            <span>width_scale</span>
+            <input type="range" class="width_scale_bar" min="50" max="150" autocomplete="off">
+          </label>
+          <label class="height_scale">
+            <span>height_scale</span>
+            <input type="range" class="height_scale_bar" min="50" max="150" autocomplete="off">
+          </label>
+        </div>
+      </div>
+      <div class="DAW_main">
+        <section class="inst_bar">
+          <div class="inst_item">
+            <div class="inst_item_left">
+                <p>Melody</p>
+                <a class="mute" href="#">
+                    <span><i class="fas fa-volume-up"></i></span>
+                    <span><i class="fas fa-volume-mute"></i></span>
+                </a>
+            </div>
+            <div class="inst_item_right">
+                <div>
+                    <p>L</p>
+                    <input type="range" class="input-knob pan" autocomplete="off">
+                    <p>R</p>
+                </div>
+                <input type="range" class="volume" value="0" min="-15" max="15" autocomplete="off">
+            </div>
+            <div class="inst_item_bottom">
+              <details>
+                <summary>エフェクト</summary>
+                <ul class="effect_list">
+                  <li class="effect_reverb">リバーブ</li>
+                  <li class="effect_chorus">コーラス</li>
+                  <li class="effect_distortion">ディストーション</li>
+                  <li class="effect_deley">ディレイ</li>
+                  <li class="effect_autowah">ワウ</li>
+                </ul>
+              </details>
+            </div>
+        </div>
+        <div class="inst_item">
+            <div class="inst_item_left">
+                <p>Chord</p>
+                <a class="mute" href="#">
+                    <span><i class="fas fa-volume-up"></i></span>
+                    <span><i class="fas fa-volume-mute"></i></span>
+                </a>
+            </div>
+            <div class="inst_item_right">
+                <div>
+                    <p>L</p>
+                    <input type="range" class="input-knob pan" autocomplete="off">
+                    <p>R</p>
+                </div>
+                <input type="range" class="volume" value="0" min="-15" max="15" autocomplete="off">
+            </div>
+            <div class="inst_item_bottom">
+              <details>
+                <summary>エフェクト</summary>
+                <ul class="effect_list">
+                  <li class="effect_reverb">リバーブ</li>
+                  <li class="effect_chorus">コーラス</li>
+                  <li class="effect_distortion">ディストーション</li>
+                  <li class="effect_deley">ディレイ</li>
+                  <li class="effect_autowah">ワウ</li>
+                </ul>
+              </details>
+            </div>
+        </div>
+        <div class="inst_item">
+            <div class="inst_item_left">
+                <p>Bass</p>
+                <a class="mute" href="#">
+                    <span><i class="fas fa-volume-up"></i></span>
+                    <span><i class="fas fa-volume-mute"></i></span>
+                </a>
+            </div>
+            <div class="inst_item_right">
+                <div>
+                    <p>L</p>
+                    <input type="range" class="input-knob pan" autocomplete="off">
+                    <p>R</p>
+                </div>
+                <input type="range" class="volume" value="0" min="-15" max="15" autocomplete="off">
+            </div>
+            <div class="inst_item_bottom">
+              <details>
+                <summary>エフェクト</summary>
+                <ul class="effect_list">
+                  <li class="effect_reverb">リバーブ</li>
+                  <li class="effect_chorus">コーラス</li>
+                  <li class="effect_distortion">ディストーション</li>
+                  <li class="effect_deley">ディレイ</li>
+                  <li class="effect_autowah">ワウ</li>
+                </ul>
+              </details>
+            </div>
+        </div>
+        <div class="inst_item">
+            <div class="inst_item_left">
+                <p>Drum</p>
+                <a class="mute" href="#">
+                    <span><i class="fas fa-volume-up"></i></span>
+                    <span><i class="fas fa-volume-mute"></i></span>
+                </a>
+            </div>
+            <div class="inst_item_right">
+                <div>
+                    <p>L</p>
+                    <input type="range" class="input-knob pan" autocomplete="off">
+                    <p>R</p>
+                </div>
+                <input type="range" class="volume" value="0" min="-15" max="15" autocomplete="off">
+            </div>
+            <div class="inst_item_bottom">
+              <details>
+                <summary>エフェクト</summary>
+                <ul class="effect_list">
+                  <li class="effect_reverb">リバーブ</li>
+                  <li class="effect_chorus">コーラス</li>
+                  <li class="effect_distortion">ディストーション</li>
+                  <li class="effect_deley">ディレイ</li>
+                  <li class="effect_autowah">ワウ</li>
+                </ul>
+              </details>
+            </div>
+        </div>
+      </section>
+        <section class="MIDI_input">
+          <div class="Measure_blank"></div>
+          <div class="Measure_grid">
+
+          </div>
+          <div class="MIDI_grid">
+            <div class="Mscale_grid">
+
+            </div>
+            <div class="Seekbar"></div>
+            <div class="note_grid">
+
+            </div>
+          </div>
+        </section>
+      </div>
+      <div class="save-window">
+        <p class="times">
+          <i class="fas fa-times fa-2x"></i>
+        </p>
+        <div class="save_info">
+          <p>作業データの保存</p>
+          <form>
+            ファイル名：
+            <input id="song_name_input" type="text">
+          </form>
+        </div>
+        <div class="save_buttons">
+          <p class="new_save-btn">新規保存</p>
+          <p class="ow_save-btn">上書き保存</p>
+        </div>
+      </div>
+    </div>
+    <!--以下menu_bar-->
+    <script type="text/javascript" src="{% static 'daw/js/menubar.js' %}"></script>
+  </boby>
+</html>

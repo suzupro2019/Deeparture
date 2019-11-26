@@ -1,0 +1,157 @@
+{% load static %}
+
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title>Deeparture | Start</title>
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'daw/css/tutorial/highlight.js.css' %}">
+    <link rel="stylesheet" href="{% static 'daw/css/tutorial/swiper.min.css' %}">
+    <link rel="stylesheet" href="{% static 'daw/css/tutorial/style.css' %}">
+    <link rel="stylesheet" href="{% static 'daw/css/tutorial/sample.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'daw/css/style_start.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+      //共用変数
+      var artist = "";
+      var key = "";
+      var rhythm_pattern = "";
+      var chord_stroke = {};
+      var drum_pattern = {};
+      var chord_prog = "";
+      var bpm;
+      $(document).ready(() => bpm = document.getElementsByClassName('bpm_number')[0].value);
+      const token = '{{ csrf_token }}';  // CSRF対策
+      const index = "{% url 'index' %}";  // ページ遷移時に使用
+      const daw_new = "{% url 'daw_new' %}";  // ページ遷移時に使用
+    </script>
+    <script src="{% static 'daw/js/tone.js' %}"></script>
+    <script src="{% static 'daw/js/rhythm_pattern.js' %}"></script>
+    <script src="{% static 'daw/js/start/prog_control.js' %}"></script>
+    <script src="{% static 'daw/js/start/demo.js' %}"></script>
+    <script src="{% static 'daw/js/tutorial/highlight.js' %}"></script>
+    <script src="{% static 'daw/js/tutorial/highlightjs-line-numbers.min.js' %}"></script>
+    <script src="{% static 'daw/js/tutorial/swiper.min.js' %}"></script>
+    <script src="{% static 'daw/js/tutorial/script.js' %}"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="l-wrapper">
+        <div class="c-container">
+          <p class="tutorial_close-btn"><i class="fas fa-times fa-2x"></i></p>
+          <div class="sample sample01">
+            <div class="swiper-container">
+              <div class="swiper-wrapper">
+                <div class="swiper-slide"><img src="{% static 'daw/images/artist.png' %}"></div>
+                <div class="swiper-slide"><img src="{% static 'daw/images/Key.png' %}"></div>
+                <div class="swiper-slide"><img src="{% static 'daw/images/Beat.png' %}"></div>
+                <div class="swiper-slide"><img src="{% static 'daw/images/BPM.png' %}"></div>
+                <div class="swiper-slide"><img src="{% static 'daw/images/melody.png' %}"></div>
+              </div>
+
+              <div class="swiper-button-prev"></div>
+              <div class="swiper-button-next"></div>
+
+              <div class="swiper-pagination"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+        <header class="Top_title">
+          <h1>Deeparture</h1>
+          <p class="start_over"><i class="fas fa-directions"></i></p>
+          <p class="start_tutorial"><i class="far fa-question-circle"></i></p>
+        </header>
+        <section id="Progress_bar">
+            <div class="Progress_number is-active">
+                <p>1</p>
+            </div>
+            <div class="Progress_number">
+                <p>2</p>
+            </div>
+            <div class="Progress_number">
+                <p>3</p>
+            </div>
+            <div class="Progress_number">
+                <p>4</p>
+            </div>
+        </section>
+        <section id="start_pages">
+            <div class="start_page is-show">
+                <h2>Select Fav Artist</h2>
+                <div class="Select_artist">
+                  <p class="artists_item">あいみょん</p>
+                  <p class="artists_item">ELLEGARDEN</p>
+                  <p class="artists_item">チャットモンチー</p>
+                  <p class="artists_item">MONGOL800</p>
+                  <p class="artists_item">Mr.Children</p>
+                </div>
+                <div class="start_next-btn">
+                    <p>Next</p>
+                </div>
+            </div>
+            <div class="start_page">
+                <h2>Select Fav Key</h2>
+                <div class="Select_key">
+                    <p class="keys_item">C/Am</p>
+                    <p class="keys_item">Db/Bbm</p>
+                    <p class="keys_item">D/Bm</p>
+                    <p class="keys_item">Eb/Cm</p>
+                    <p class="keys_item">E/Dbm</p>
+                    <p class="keys_item">F/Dm</p>
+                    <p class="keys_item">Gb/Ebm</p>
+                    <p class="keys_item">G/Em</p>
+                    <p class="keys_item">Ab/Fm</p>
+                    <p class="keys_item">A/Gbm</p>
+                    <p class="keys_item">Bb/Gm</p>
+                    <p class="keys_item">B/Abm</p>
+                </div>
+                <div class="start_next-btn">
+                    <p>Next</p>
+                </div>
+            </div>
+            <div class="start_page">
+              <h2>Select Fav Beat</h2>
+              <div class="Select_beat">
+                <p class="beats_item">A</p>
+                <p class="beats_item">B</p>
+                <p class="beats_item">C</p>
+                <p class="beats_item">D</p>
+              </div>
+              <div class="bpm_changer">
+                <p>BPM</p>
+                <input class="bpm_number" type="number" value="120" autocomplete="off">
+              </div>
+              <div class="beat_seekbar">
+                <p class="beat_play">
+                  <span class="beat_play-btn"><i class="fas fa-play fa-2x"></i></span>
+                  <span class="beat_stop-btn"><i class="far fa-square fa-2x"></i></span>
+                </p>
+              </div>
+              <div class="start_next-btn">
+                <p>Next</p>
+              </div>
+            </div>
+            <div class="start_page">
+              <h2>Created DEMO!</h2>
+              <p class="gene_chords"></p>
+              <p class="regeneration_btn">Chord Regeneration</p>
+              <div class="bpm_changer">
+                  <p>BPM</p>
+                  <input class="bpm_number" type="number" value="120" autocomplete="off">
+              </div>
+              <div class="demo_seekbar">
+                <p class="demo_play">
+                  <span class="demo_play-btn"><i class="fas fa-play fa-2x"></i></span>
+                  <span class="demo_stop-btn"><i class="far fa-square fa-2x"></i></span>
+                </p>
+              </div>
+              <p class="suggested_chords"></p>
+              <div class="start_next-btn DAW_start-btn">
+                  <p>Start</p>
+              </div>
+            </div>
+        </section>
+    </div>
+  </body>
+</html>

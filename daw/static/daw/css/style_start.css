@@ -1,0 +1,276 @@
+html {
+    font-family: helvetica, arial, sans-serif;
+    font-size: 15px;
+    color: #333;
+}
+body {
+    margin: 0;
+    background-color: #aaa;
+    margin-bottom: 30px;
+}
+.main{
+  position: relative;
+}
+a {
+    text-decoration: none;
+    color: #333;
+}
+
+/*start.html*/
+h1 {
+    background-color: #ccc;
+    font-size: 32px;
+    text-align: center;
+    padding: 0.8em 0;
+}
+h2{
+    font-size: 24px;
+    text-align: center;
+}
+
+.l-wrapper{
+  position: absolute;
+  display: block;
+  top: 80%;
+  left: 50%;
+  transform : translate(-50%, -50%);
+  z-index: 100;
+  padding-bottom: 0;
+}
+.tutorial_close-btn{
+  position: absolute;
+  top: 20px;
+  right: 40px;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 101;
+}
+
+.Top_title{
+  position: relative;
+}
+.start_over{
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 10px;
+  margin: 20px;
+  border: none;
+  background-color: #9effce;
+  color: #595757;
+  font-size: 30px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 10px;
+  user-select: none; /* CSS3 */
+  cursor: pointer;
+}
+.start_over:hover{
+  opacity: 0.8;
+}
+.start_tutorial{
+  position: absolute;
+  top: 0;
+  left: 70px;
+  padding: 10px;
+  margin: 20px;
+  border: none;
+  background-color: khaki;
+  color: #595757;
+  font-size: 30px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 10px;
+  user-select: none; /* CSS3 */
+  cursor: pointer;
+}
+.start_tutorial:hover{
+  opacity: 0.8;
+}
+#Progress_bar {
+    display: flex;
+    justify-content: center;
+    width: 500px;
+    margin: 0 auto;
+    cursor: pointer;
+}
+.Progress_number {
+    background-color: white;
+    border: 1px solid black;
+    padding: 10px 55px;
+    text-align: center;
+}
+.Progress_number:hover{
+    opacity: 0.8;
+}
+.Progress_number p{
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
+.Progress_number.is-active {
+    background-color: aquamarine;
+    transition: all 0.2s ease-out;
+}
+.start_page {
+    display: none;
+}
+.start_page.is-show {
+    display: block;
+}
+
+.Select_artist {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 80%;
+    margin: 0 auto;
+}
+.artists_item {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background-color: white;
+    text-align: center;
+    line-height: 200px;
+    margin: 10px 0;
+    cursor: pointer;
+
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+}
+.artists_item:hover{
+    opacity: 0.8;
+}
+.artists_is-select{
+    background-color: aquamarine;
+}
+
+.start_next-btn{
+    width: 200px;
+    height: 75px;
+    font-size: 20px;
+    background-color: white;
+    border-radius: 15px;
+    text-align: center;
+    line-height: 75px;
+    margin: 0 auto;
+    cursor: pointer;
+}
+.DAW_start-btn{
+  background-color: lightblue;
+}
+.start_next-btn:hover{
+    opacity: 0.8;
+}
+
+.Select_key {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 80%;
+    margin: 0 auto;
+}
+.keys_item {
+    width: 75px;
+    height: 75px;
+    background-color: white;
+    text-align: center;
+    line-height: 75px;
+    cursor: pointer;
+
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+.keys_item:hover{
+    opacity: 0.8;
+}
+.keys_is-select{
+    background-color: aquamarine;
+}
+
+.Select_beat {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 80%;
+    margin: 0 auto;
+}
+.beats_item {
+    width: 250px;
+    height: 250px;
+    background-color: white;
+    border-radius: 20px;
+    text-align: center;
+    line-height: 250px;
+
+    font-size: 32px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+}
+.beats_item:hover{
+    opacity: 0.8;
+}
+.beats_is-select{
+    background-color: aquamarine;
+}
+.beat_seekbar{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+.beat_play-btn{
+  display: block;
+}
+.beat_stop-btn{
+  display: none;
+}
+
+.bpm_changer{
+    text-align: center;
+
+}
+.bpm_changer p{
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+.gene_chords{
+  font-size: 20px;
+  text-align: center;
+  margin-bottom: 40px;
+}
+.regeneration_btn{
+  width: 250px;
+  height: 70px;
+  font-size: 20px;
+  background-color: white;
+  border-radius: 15px;
+  text-align: center;
+  line-height: 70px;
+  margin: 0 auto;
+  cursor: pointer;
+}
+.regeneration_btn:hover{
+    opacity: 0.8;
+}
+.demo_seekbar{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.demo_play-btn{
+  display: block;
+}
+.demo_stop-btn{
+  display: none;
+}
+
+/* COMBAK: 暫定的な対処 ちゃんと考えるべき */
+p{
+  margin: 1em 0;
+}

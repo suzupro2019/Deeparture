@@ -1,0 +1,95 @@
+{% load static %}
+
+<html lang ="ja">
+  <head>
+    <meta charset="utf-8">
+    <title>project select</title>
+    <link href="{% static 'daw/css/index.css' %}"rel="stylesheet">
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- 日付フォーマット用ライブラリ -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js" type="text/javascript"></script>
+    <script>
+      var your_project = [];
+      $.ajax({
+        type: 'GET',
+        url: '/api/v1/projects/',
+        dataType: 'json',
+      })
+        .then(response => {
+          // console.log(response);
+          response.forEach(elem => {
+            const id = elem.id;
+            const project_name = elem.project_name;
+            const created_at = elem.created_at;
+            const updated_at = elem.updated_at;
+            let date;
+            if(updated_at) {
+              date = moment(updated_at).format("YYYY/MM/DD HH:mm:ss");
+            } else {
+              date = moment(created_at).format("YYYY/MM/DD HH:mm:ss");
+            }
+            your_project.push({id: id, name: project_name, date: date});
+          });
+        })
+        .catch(error => {
+          // TODO: エラー時の処理も考えるべき
+          console.log('data load error');
+          console.log('status: ' + error.status);
+          console.log(error);
+        })
+        .then(() => {
+          // console.log(your_project);
+          $(function(){
+            for(var x=0; x<your_project.length; x++){
+              $(".pro_list").append("<li>");
+            }
+            for(x=0; x<your_project.length; x++){
+              $(".pro_list li").eq(x).append("<span class=\"pro_name\">"+your_project[x].name);
+              $(".pro_list li").eq(x).append("<span class=\"pro_date\">"+your_project[x].date);
+            }
+
+            $(".open_project").click(function(){
+              $(".open_pro_window").css("display", "block");
+            });
+            $(".times").click(function(){
+              $(".open_pro_window").css("display", "none");
+            });
+            $(".pro_list li").click(function(){
+              id = your_project[$(".pro_list li").index(this)].id;
+              url = "{% url 'daw_edit' '88888888-4444-4444-4444-121212121212' %}".replace(/88888888-4444-4444-4444-121212121212/, id);
+              location.href = url;
+            });
+          });
+        });
+    </script>
+  </head>
+    <body>
+      <div class="main">
+        <header class="Top_title">
+          <h1>Project select</h1>
+        </header>
+        <div class="user_name">
+            <p>ようこそ {{ user.get_username }} さん</p>
+            <p><a href="{% url 'account_logout' %}">ログアウト</a></p>
+        </div>
+        <div class="project_select">
+          <a href="{% url 'daw_start' %}">
+            <p class="project_item">Create New
+              <br>
+            <img src="{% static 'daw/images/piano.svg' %}" width="150" height="150">
+            </p>
+          </a>
+          <p class="project_item open_project">Open Project
+          <img src="{% static 'daw/images/music_icon.svg' %}" width="150" height="150">
+          </p>
+        </div>
+        <div class="open_pro_window">
+          <p class="times">
+            <i class="fas fa-times fa-2x"></i>
+          </p>
+          <ul class="pro_list"></ul>
+        </div>
+      </div>
+    </body>
+</html>

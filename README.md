@@ -6,8 +6,8 @@
 以下、全てコマンドライン上で実行
 
 ```:command-line
-$ git clone https://github.com/ne290008/daw-beta.git
-$ cd daw-beta
+$ git clone https://github.com/suzupro2019/Deeparture.git
+$ cd Deeparture
 $ python manage.py migrate
 $ python manage.py createsuperuser
 $ python manage.py runserver

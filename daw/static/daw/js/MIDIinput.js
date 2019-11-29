@@ -613,7 +613,7 @@ jQuery(function($){
 
   //コード(文字列からの生成)
   //受け渡されるデータ(コードストローク、ドラムパターン)
-  var rhythm_pattern = "A"; //A,B,Cのいずれか
+  // var rhythm_pattern = "A"; //A,B,C,Dのいずれか
   var test_chord2_original = "Dm Am Bb F"; //Chainerからの出力
   // COMBAK: わざわざtest_chord2_originalに入れる必要性があるのか？
   test_chord2_original = chord_prog;

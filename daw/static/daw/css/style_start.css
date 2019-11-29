@@ -10,6 +10,13 @@ body {
 }
 .main{
   position: relative;
+  height: 100%;
+}
+h2{
+  margin: 10px;
+}
+p{
+  margin: 10px;
 }
 a {
     text-decoration: none;
@@ -26,24 +33,6 @@ h1 {
 h2{
     font-size: 24px;
     text-align: center;
-}
-
-.l-wrapper{
-  position: absolute;
-  display: block;
-  top: 80%;
-  left: 50%;
-  transform : translate(-50%, -50%);
-  z-index: 100;
-  padding-bottom: 0;
-}
-.tutorial_close-btn{
-  position: absolute;
-  top: 20px;
-  right: 40px;
-  padding: 10px;
-  cursor: pointer;
-  z-index: 101;
 }
 
 .Top_title{
@@ -91,7 +80,7 @@ h2{
     display: flex;
     justify-content: center;
     width: 500px;
-    margin: 0 auto;
+    margin: 10px auto;
     cursor: pointer;
 }
 .Progress_number {
@@ -241,7 +230,6 @@ h2{
 .gene_chords{
   font-size: 20px;
   text-align: center;
-  margin-bottom: 40px;
 }
 .regeneration_btn{
   width: 250px;
@@ -251,7 +239,7 @@ h2{
   border-radius: 15px;
   text-align: center;
   line-height: 70px;
-  margin: 0 auto;
+  margin: 10px auto 30px auto;
   cursor: pointer;
 }
 .regeneration_btn:hover{
@@ -268,9 +256,4 @@ h2{
 }
 .demo_stop-btn{
   display: none;
-}
-
-/* COMBAK: 暫定的な対処 ちゃんと考えるべき */
-p{
-  margin: 1em 0;
 }

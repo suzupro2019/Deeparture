@@ -83,14 +83,14 @@ $(".ow_save-btn").click(function(){
 });
 
 /*helpボタン*/
-var help_flg = 0;
 $('#help').click(function() {
-  if(help_flg == 0){
+  if(help_flg == false){
     $('#help').css('background','#ffff7f');
-    help_flg = 1;
+    help_flg = true;
   }else{
     $('#help').css('background','#8fdfda');
-    help_flg = 0;
+    $(".callout").hide();
+    help_flg = false;
   }
 });
 

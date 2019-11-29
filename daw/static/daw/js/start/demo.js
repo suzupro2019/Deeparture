@@ -136,7 +136,7 @@ jQuery(function($){
         }
       }
     }
-    console.log(MIDI_chord);
+    //console.log(MIDI_chord);
   }
 
   function Stroke_init(){
@@ -160,7 +160,7 @@ jQuery(function($){
         chord_stroke.D[x].note = [47, 43, 40];
       }
     }
-    console.log(chord_stroke);
+    //console.log(chord_stroke);
   }
 
   function Bass_gene(){
@@ -182,21 +182,30 @@ jQuery(function($){
         MIDI_drum.push(drum_pattern[rhythm_pattern][x]);
       }
     }
-    console.log(MIDI_drum);
+    //console.log(MIDI_drum);
   }
 
   function MIDI_gene(ch, pattern){ //(コード進行, リズムパターン)
+    //初期化
     Stroke_init();
     MIDI_chord = [];
     MIDI_bass = [];
+    bassline = [];
     MIDI_drum = [];
+    //生成
     Chord_gene(ch, pattern);
     Bass_gene();
     Drum_gene();
   }
 
+  function Demo_play_init(){ //デモの再生情報・表示の初期化
+    $('.play-btn').show();
+    $('.stop-btn').hide();
+    Tone.Transport.stop();
+    Tone.Transport.cancel();
+  }
+
   $(".beat_play").on("click", function(){
-    console.log(rhythm_pattern);
     if(rhythm_pattern != ""){
       if($(".beat_play-btn").css("display") == "block"){
         $('.beat_play-btn').css('display','none');
@@ -209,11 +218,7 @@ jQuery(function($){
         var Drum = new Tone.Part(addDrum, MIDI_drum).start();
         Tone.Transport.start();
       }else{
-        $('.beat_play-btn').css('display','block');
-        $('.beat_stop-btn').css('display','none');
-        //再生停止の処理
-        Tone.Transport.stop();
-        Tone.Transport.cancel();
+        Demo_play_init();
       }
     }else{
       alert("リズムパターンを選択してください。")
@@ -221,6 +226,7 @@ jQuery(function($){
   });
 
   $(".start_next-btn").click(function(){
+    Demo_play_init();
     if($('.start_next-btn').index(this) == 2){
       console.log(artist);
       console.log(key);
@@ -230,7 +236,7 @@ jQuery(function($){
           console.log('succeed');
           console.log(response);
           chord_prog = generated_chord = response.chord_progression;
-          MIDI_gene(generated_chord, "A");
+          MIDI_gene(generated_chord, rhythm_pattern);
           $(".gene_chords").html(generated_chord);
           isCreatedDeme = 1;
         })
@@ -243,6 +249,7 @@ jQuery(function($){
   });
   $(".Progress_number").click(function(){
     if($(".Progress_number").index(this) == 3 && $(this).hasClass("is-active")){
+      Demo_play_init();
       console.log(artist);
       console.log(key);
       console.log(rhythm_pattern);
@@ -251,7 +258,7 @@ jQuery(function($){
           console.log('succeed');
           console.log(response);
           chord_prog = generated_chord = response.chord_progression;
-          MIDI_gene(generated_chord, "A");
+          MIDI_gene(generated_chord, rhythm_pattern);
           $(".gene_chords").html(generated_chord);
           isCreatedDeme = 1;
         })
@@ -274,9 +281,10 @@ jQuery(function($){
         console.log('succeed');
         console.log(response);
         chord_prog = generated_chord = response.chord_progression;
-        MIDI_gene(generated_chord, "A");
+        MIDI_gene(generated_chord, rhythm_pattern);
         $(".gene_chords").html(generated_chord);
         isCreatedDeme = 1;
+        Demo_play_init();
       })
       .catch(error => {
         console.log('failed');
@@ -299,11 +307,7 @@ jQuery(function($){
       var Drum = new Tone.Part(addDrum, drum_pattern[rhythm_pattern]).start();
       Tone.Transport.start();
     }else{
-      $('.demo_play-btn').css('display','block');
-      $('.demo_stop-btn').css('display','none');
-      //再生停止の処理
-      Tone.Transport.stop();
-      Tone.Transport.cancel();
+      Demo_play_init();
     }
   });
 });

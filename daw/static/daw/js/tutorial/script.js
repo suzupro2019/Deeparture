@@ -27,6 +27,7 @@ window.addEventListener('DOMContentLoaded', function() {
 }, false);
 
 jQuery(function(){
+  //スタート画面
   $(".start_tutorial").on("click", function(){
     if($(".l-wrapper").css("display") == "block"){
       $(".l-wrapper").css("display", "none");
@@ -37,6 +38,15 @@ jQuery(function(){
   $(".tutorial_close-btn").on("click", function(){
     if($(".l-wrapper").css("display") == "block"){
       $(".l-wrapper").css("display", "none");
+    }
+  });
+
+  //DAW画面
+  $("#help").on("click", function(){
+    if($(".l-wrapper").css("display") == "block"){
+      $(".l-wrapper").hide();
+    }else{
+      $(".l-wrapper").show();
     }
   });
 });

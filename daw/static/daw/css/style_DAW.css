@@ -95,7 +95,7 @@ td.extime{
   -ms-overflow-style:none;
 }
 .gr::-webkit-scrollbar{
- display:none;
+  display:none;
 }
 .wh{
   margin: 0 0 5px 0;
@@ -383,7 +383,10 @@ label span{
   display: flex;
   width: 87.5%;
   height: 5%;
-  overflow: hidden;
+  overflow: scroll;
+}
+.Measure_grid::-webkit-scrollbar{
+  display:none;
 }
 .MIDI_grid{
   flex-grow: 0;
@@ -396,7 +399,10 @@ label span{
 .Mscale_grid{
   width: 100px;
   height: 100%;
-  overflow: hidden;
+  overflow: scroll;
+}
+.Mscale_grid::-webkit-scrollbar{
+  display:none;
 }
 .note_grid{
   display: flex;

@@ -42,11 +42,11 @@ jQuery(function(){
   });
 
   //DAW画面
-  $("#help").on("click", function(){
+  /*$("#help").on("click", function(){
     if($(".l-wrapper").css("display") == "block"){
       $(".l-wrapper").hide();
     }else{
       $(".l-wrapper").show();
     }
-  });
+  });*/
 });

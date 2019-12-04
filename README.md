@@ -1,11 +1,10 @@
 # Deeparture
-
-鈴木プロジェクト2019
+[鈴木プロジェクト2019](http://www.ne.senshu-u.ac.jp/~proj2019-25/)
 
 ## 動かし方
 以下、全てコマンドライン上で実行
 
-```:command-line
+```
 $ git clone https://github.com/suzupro2019/Deeparture.git
 $ cd Deeparture
 $ python manage.py migrate
@@ -21,7 +20,7 @@ $ python manage.py runserver
 
 *注）関連パッケージのインストールが済んでいない場合はインストールする。関連パッケージ は`requirements.txt`を参照。以下コマンドの実行により一括でインストールすることができる。*
 
-```:command-line
+```
 $ pip install -r requirements.txt
 ```
 

@@ -205,7 +205,7 @@ jQuery(function($){
     Tone.Transport.cancel();
   }
 
-  $(".beat_play").on("click", function(){
+  function Beat_play(){
     if(rhythm_pattern != ""){
       if($(".beat_play-btn").css("display") == "block"){
         $('.beat_play-btn').css('display','none');
@@ -223,9 +223,13 @@ jQuery(function($){
     }else{
       alert("リズムパターンを選択してください。")
     }
+  }
+  $(".beat_play").on("click", function(){
+    Beat_play();
   });
 
   $(".start_next-btn").click(function(){
+    $('.bpm_number').attr("value", bpm);
     Demo_play_init();
     if($('.start_next-btn').index(this) == 2){
       console.log(artist);
@@ -248,8 +252,9 @@ jQuery(function($){
     }
   });
   $(".Progress_number").click(function(){
+    $('.bpm_number').attr("value", bpm);
+    Demo_play_init();
     if($(".Progress_number").index(this) == 3 && $(this).hasClass("is-active")){
-      Demo_play_init();
       console.log(artist);
       console.log(key);
       console.log(rhythm_pattern);
@@ -295,7 +300,7 @@ jQuery(function($){
     }
   });
 
-  $('.demo_play').on("click", function() {
+  function Demo_play(){
     Tone.Transport.bpm.value = bpm;
     if($(".demo_play-btn").css("display") == "block"){
       $('.demo_play-btn').css('display','none');
@@ -308,6 +313,22 @@ jQuery(function($){
       Tone.Transport.start();
     }else{
       Demo_play_init();
+    }
+  }
+  $('.demo_play').on("click", function() {
+    Demo_play();
+  });
+
+  $(document).on("keydown", function(e){ //スペースキーで再生・停止
+    if(e.keyCode == 32){
+      if(e.preventDefault){
+        e.preventDefault();
+      }
+      if($(".start_page").eq(2).hasClass("is-show")){
+        Beat_play();
+      }else if($(".start_page").eq(3).hasClass("is-show")){
+        Demo_play();
+      }
     }
   });
 });

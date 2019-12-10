@@ -110,17 +110,20 @@ jQuery(function($){
   });
 
   //notes縦横可変
-  var measure_width = 800; //measureの最低幅 ページ読み込み時の初期サイズは1600px
-  var note_width = 50; //notesの最低幅 ページ読み込み時の初期サイズは100px
-  var note_height = 20; //notesの最低高さ ページ読み込み時の初期サイズは40px
+  const measure_width = 800; //measuresの最低幅 ページ読み込み時の初期サイズは1600px
+  const note_width = 50; //notesの最低幅 ページ読み込み時の初期サイズは100px
+  const note_height = 20; //notesの最低高さ ページ読み込み時の初期サイズは40px
+  var note_resize_width = 100; //notesの現在幅
+  var measure_resize_width = 1600; //measuresの現在幅
 
   $(".Mscale_notes").css({"width":note_width*2, "height":note_height*2});
   $(".notes").css({"width":note_width*2, "height":note_height*2});
 
   $(".width_scale_bar").on("input",function(){
-    var measure_resize_width = measure_width * ($(".width_scale_bar").val() / 50);
+    measure_resize_width = measure_width * ($(".width_scale_bar").val() / 50);
+    $(".measures").eq(Seek_measure).css("width",measure_resize_width+3);
     $(".measures").css("width", measure_resize_width);
-    var note_resize_width = note_width * ($(".width_scale_bar").val() / 50);
+    note_resize_width = note_width * ($(".width_scale_bar").val() / 50);
     $(".notes").css("width", note_resize_width);
   });
   $(".height_scale_bar").on("input",function(){
@@ -634,7 +637,7 @@ jQuery(function($){
 
   //再生処理
   var Seekbar_position = 0;
-  function Seekbar_move(){
+  function Seekbar_move(){ //再生時, →の処理
     if(Seekbar_position > notes_measure){
       Seekbar_position = 0;
       $(".Seekbar").remove();
@@ -644,11 +647,15 @@ jQuery(function($){
       $(".MIDI_notes").eq(Seekbar_position).after("<div class=\"Seekbar\">");
       Seekbar_position++;
     }
+    $(".note_grid").scrollLeft(note_resize_width*Seekbar_position);
+    Mwidth_control();
   }
-  function Seekbar_back(){
+  function Seekbar_back(){ //←の処理
     Seekbar_position--;
     $(".Seekbar").remove();
-    $(".MIDI_notes").eq(Seekbar_position).after("<div class=\"Seekbar\">");
+    $(".MIDI_notes").eq(Seekbar_position).before("<div class=\"Seekbar\">");
+    $(".note_grid").scrollLeft(note_resize_width*Seekbar_position);
+    Mwidth_control();
   }
   var Measure_position = "0:0:0";
   function Measure_calc(num){
@@ -662,6 +669,12 @@ jQuery(function($){
     }
     var Disp_Measure_position = ((a+1)+":"+b+":"+c); //表示用
     $(".exbar .gr").html(Disp_Measure_position);
+  }
+  var Seek_measure = 0;
+  function Mwidth_control(){
+    Seek_measure = Math.floor(Seekbar_position / 16);
+    $(".measures").css("width",measure_resize_width);
+    $(".measures").eq(Seek_measure).css("width",measure_resize_width+3);
   }
   $(".exbar .gr").html("1:0:0");
   $(".extime .gr").html("00:00");
@@ -703,7 +716,8 @@ jQuery(function($){
       var Drum = new Tone.Part(addDrum, play_MIDI_Drum).start();
 
       Tone.Transport.seconds = Measure_position; //再生位置
-      Tone.Transport.scheduleRepeat(function(){ //シークバー
+      Tone.Transport.scheduleRepeat(function(){ //シークバー他再生時の処理
+        Tone.Transport.bpm.value = bpm;
         Seekbar_move();
         Measure_calc(Seekbar_position);
         if(Tone.Transport.getSecondsAtTime()%60 > 10){
@@ -714,15 +728,17 @@ jQuery(function($){
         $(".extime .gr").html(Seekbar_time);
         //console.log($('.Seekbar').offset().left);
         //console.log($('.note_grid').offset().left);
-        //$(".note_grid").scrollLeft($('.MIDI_notes').eq(Seekbar_position).offset().left);
       }, "16n");
       Tone.Transport.loop = true;
       Tone.Transport.loopEnd = "8:0:0";
       Tone.Transport.start();
     }else{
-      Tone.Transport.stop();
-      Tone.Transport.cancel();
+      music_stop();
     }
+  }
+  function music_stop(){
+    Tone.Transport.stop();
+    Tone.Transport.cancel();
   }
 
   $("#play").click(function(){
@@ -743,20 +759,24 @@ jQuery(function($){
       music_back();
     }
     if(e.keyCode == 37){ //← 再生位置を戻す
-      if(e.preventDefault){
-        e.preventDefault();
-      }
-      console.log("←")
-      /*if(Seekbar_position > 0){
+      e.preventDefault();
+      if(Seekbar_position > 0){
+        if(play_flg){
+          music_stop();
+        }
         Seekbar_back();
         Measure_calc(Seekbar_position);
-      }*/
+      }
     }
     if(e.keyCode == 39){ //→ 再生位置を進める
-      if(e.preventDefault){
-        e.preventDefault();
+      e.preventDefault();
+      if(Seekbar_position < 128){
+        if(play_flg){
+          music_stop();
+        }
+        Seekbar_move();
+        Measure_calc(Seekbar_position);
       }
-      console.log("→")
     }
     if(e.metaKey && e.keyCode == 89 && Undo_idx+2 < Melody_log.length){ //cmd + y リドゥ
       if(e.preventDefault){

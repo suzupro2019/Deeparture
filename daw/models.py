@@ -20,13 +20,16 @@ class Project(models.Model):
     project_name = models.CharField(verbose_name='プロジェクト名', max_length=64)
     author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE,
                                verbose_name='作成者')
-    melody_data = JSONField(verbose_name='メロディデータ', null=True)
+    melody_data = JSONField(verbose_name='メロディデータ', blank=True, null=True)
     artist = models.CharField(verbose_name='アーティスト', max_length=32)
     key = models.CharField(verbose_name='キー', max_length=8)
     rhythm_pattern = models.CharField(verbose_name='リズムパターン', max_length=1)
     chord_prog = models.CharField(verbose_name='コード進行', max_length=64)
     bpm = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(240)],
                               verbose_name='BPM')
+    volume_data = JSONField(verbose_name='ボリュームデータ', blank=True, null=True)
+    pan_data = JSONField(verbose_name='パンデータ', blank=True, null=True)
+    effect_data = JSONField(verbose_name='エフェクトデータ', blank=True, null=True)
     created_at = models.DateTimeField(verbose_name='作成日時', default=timezone.now)
     updated_at = models.DateTimeField(verbose_name='更新日時', blank=True, null=True)
 

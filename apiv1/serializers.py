@@ -13,7 +13,7 @@ class ChordProgressionSerializer(serializers.Serializer):
 
     artist = serializers.ChoiceField(choices=artists)
     key = serializers.ChoiceField(choices=keys)
-    #出⼒時に get_chord_progression() が呼ばれる
+    # 出⼒時に get_chord_progression() が呼ばれる
     chord_progression = serializers.SerializerMethodField()
 
     def get_chord_progression(self, obj):
@@ -25,6 +25,9 @@ class ProjectSerializer(serializers.ModelSerializer):
 
     author_email = serializers.ReadOnlyField(source='author.email')
     melody_data = serializers.JSONField(label='メロディデータ', allow_null=True)
+    volume_data = serializers.JSONField(label='ボリュームデータ', allow_null=True)
+    pan_data = serializers.JSONField(label='パンデータ', allow_null=True)
+    effect_data = serializers.JSONField(label='エフェクトデータ', allow_null=True)
 
     class Meta:
         model = Project

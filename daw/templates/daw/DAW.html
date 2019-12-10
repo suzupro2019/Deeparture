@@ -24,6 +24,11 @@
       var chord_stroke = {};
       var drum_pattern = {};
 
+      // ボリューム,パン,エフェクトの初期値
+      var volume = [0, 0, 0, 0]; //全楽器のボリューム情報
+      var pan = [0, 0, 0, 0]; //全楽器のパン情報
+      var effect_selecter = [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]; //全楽器のエフェクトのオン/オフ情報
+
       const token = '{{ csrf_token }}';  // CSRF対策
       const index = "{% url 'index' %}";  // ページ遷移時に使用
 
@@ -49,6 +54,10 @@
         var rhythm_pattern = "{{ project.rhythm_pattern }}";
         var chord_prog = "{{ project.chord_prog }}";
         var bpm = parseInt("{{ project.bpm }}");
+        // 以下は該当するデータがない(空)の場合,初期値を代入する
+        volume = {{ project.volume_data|default:'volume'|safe }};
+        pan = {{ project.pan_data|default:'pan'|safe }};
+        effect_selecter = {{ project.effect_data|default:'effect_selecter'|safe }};
       }
       // 確認用
       console.log('artist: ' + artist);
@@ -56,7 +65,9 @@
       console.log('rhythm_pattern: ' + rhythm_pattern);
       console.log('chord_prog: ' + chord_prog);
       console.log('bpm: ' + bpm);
-      console.log(typeof(bpm));
+      console.log(volume);
+      console.log(pan);
+      console.log(effect_selecter);
       </script>
       <!--以下inst_bar-->
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -98,7 +109,7 @@
         <!--左-->
         <div class="save-button trigger">
           <p id="save"><i class="far fa-save fa-fw"></i></p>
-          <div class="save_callout callout"><p class="callout_text">このボタンをクリックすることで、楽曲データを保存することができます。</p></div>
+          <div class="save_callout callout"><p class="callout_text">このボタンをクリックすることで、楽曲データを保存することができます。</p><span class="shortcut_text">cmd + S</span></div>
         </div>
 
         <div class="help-button trigger">
@@ -117,7 +128,7 @@
             <span class="play-btn"><i class="fas fa-play"></i></span>
             <span class="stop-btn"><i class="far fa-square"></i></span>
           </p>
-          <div class="saisei_callout callout"><p class="callout_text">左のボタンで再生位置を最初に戻す、右のボタンで楽曲を再生することができます。</p></div>
+          <div class="saisei_callout callout"><p class="callout_text">左のボタンで再生位置を最初に戻す、右のボタンで楽曲を再生することができます。</p><span class="shortcut_text">return | space</span></div>
         </div>
 
         <!--右-->
@@ -186,8 +197,12 @@
                 <div class="pan_callout callout"><p class="callout_text">左右にドラッグすることで、そのパートのパン(音の出る方向)を調整できます。</p></div>
               </div>
               <div class="volume_container trigger">
-                <input type="range" class="volume" value="0" min="-15" max="15" autocomplete="off">
-                <div class="volume_callout callout"><p class="callout_text">左右にドラッグすることで、そのパートのボリュームを変更できます。</p></div>
+                <div>
+                  <span class="vol_mark">-</span>
+                  <input type="range" class="volume" value="0" min="-15" max="15" autocomplete="off">
+                  <span class="vol_mark">+</span>
+                  <div class="volume_callout callout"><p class="callout_text">左右にドラッグすることで、そのパートのボリュームを変更できます。</p></div>
+                </div>
               </div>
             </div>
             <div class="inst_item_bottom">
@@ -228,12 +243,18 @@
                 </div>
             </div>
             <div class="inst_item_right">
+              <div>
+                  <p>L</p>
+                  <input type="range" class="input-knob pan" autocomplete="off" value="0" min="-1" max="1"step="0.01">
+                  <p>R</p>
+              </div>
+              <div class="volume_container">
                 <div>
-                    <p>L</p>
-                    <input type="range" class="input-knob pan" autocomplete="off" value="0" min="-1" max="1"step="0.01">
-                    <p>R</p>
+                  <span class="vol_mark">-</span>
+                  <input type="range" class="volume" value="0" min="-15" max="15" autocomplete="off">
+                  <span class="vol_mark">+</span>
                 </div>
-                <input type="range" class="volume" value="0" min="-15" max="15" autocomplete="off">
+              </div>
             </div>
             <div class="inst_item_bottom">
               <details>
@@ -262,7 +283,13 @@
                   <input type="range" class="input-knob pan" autocomplete="off" value="0" min="-1" max="1"step="0.01">
                   <p>R</p>
                 </div>
-                <input type="range" class="volume" value="0" min="-15" max="15" autocomplete="off">
+                <div class="volume_container">
+                  <div>
+                    <span class="vol_mark">-</span>
+                    <input type="range" class="volume" value="0" min="-15" max="15" autocomplete="off">
+                    <span class="vol_mark">+</span>
+                  </div>
+                </div>
             </div>
             <div class="inst_item_bottom">
               <details>
@@ -291,7 +318,13 @@
                   <input type="range" class="input-knob pan" autocomplete="off" value="0" min="-1" max="1"step="0.01">
                   <p>R</p>
                 </div>
-                <input type="range" class="volume" value="0" min="-15" max="15" autocomplete="off">
+                <div class="volume_container">
+                  <div>
+                    <span class="vol_mark">-</span>
+                    <input type="range" class="volume" value="0" min="-15" max="15" autocomplete="off">
+                    <span class="vol_mark">+</span>
+                  </div>
+                </div>
             </div>
             <div class="inst_item_bottom">
               <details>

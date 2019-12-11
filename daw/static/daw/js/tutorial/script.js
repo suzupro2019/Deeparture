@@ -49,4 +49,17 @@ jQuery(function(){
       $(".l-wrapper").show();
     }
   });*/
+  $(document).on("keydown", function(e){
+    if(e.keyCode == 27){ //Escでセーブウィンドウ・チュートリアルを閉じる
+      if(e.preventDefault){
+        e.preventDefault();
+      }
+      if($(".save-window").css("display") == "block"){
+        $(".save-window").hide();
+      }
+      if($(".l-wrapper").css("display") == "block"){
+        $(".l-wrapper").hide();
+      }
+    }
+  });
 });

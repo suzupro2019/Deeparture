@@ -138,17 +138,6 @@ $(function() { //Enterを押しても送信されないようにする。
       }
       $(".save-window").show();
     }
-    if(e.keyCode == 27){ //Escでセーブウィンドウ・チュートリアルを閉じる
-      if(e.preventDefault){
-        e.preventDefault();
-      }
-      if($(".save-window").css("display") == "block"){
-        $(".save-window").hide();
-      }
-      if($(".l-wrapper").css("display") == "block"){
-        $(".l-wrapper").hide();
-      }
-    }
     //Enterで再生位置を初期位置に戻す >> MIDIinput.jsに記載
     if(e.keyCode == 32){ //スペースキーで再生・停止
       if(e.preventDefault){

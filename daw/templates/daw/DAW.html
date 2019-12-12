@@ -24,10 +24,11 @@
       var chord_stroke = {};
       var drum_pattern = {};
 
-      // ボリューム,パン,エフェクトの初期値
+      // ボリューム,パン,エフェクト,コード楽器の初期値
       var volume = [0, 0, 0, 0]; //全楽器のボリューム情報
       var pan = [0, 0, 0, 0]; //全楽器のパン情報
       var effect_selecter = [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]; //全楽器のエフェクトのオン/オフ情報
+      var chord_idx = 0; //コードの楽器番号
 
       const token = '{{ csrf_token }}';  // CSRF対策
       const index = "{% url 'index' %}";  // ページ遷移時に使用
@@ -54,6 +55,7 @@
         var rhythm_pattern = "{{ project.rhythm_pattern }}";
         var chord_prog = "{{ project.chord_prog }}";
         var bpm = parseInt("{{ project.bpm }}");
+        chord_idx = parseInt("{{ project.chord_inst_num }}");
         // 以下は該当するデータがない(空)の場合,初期値を代入する
         volume = {{ project.volume_data|default:'volume'|safe }};
         pan = {{ project.pan_data|default:'pan'|safe }};
@@ -68,6 +70,7 @@
       console.log(volume);
       console.log(pan);
       console.log(effect_selecter);
+      console.log('chord_idx: ' + chord_idx);
       </script>
       <!--以下inst_bar-->
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -83,6 +86,8 @@
     <script src="{% static 'daw/js/tutorial/highlightjs-line-numbers.min.js' %}"></script>
     <script src="{% static 'daw/js/tutorial/swiper.min.js' %}"></script>
     <script src="{% static 'daw/js/tutorial/script.js' %}"></script>
+    <!-- ユーザー情報表示用テンプレート(スクリプト記述)の挿入 -->
+    {% include 'daw/parts/user-js.html' %}
   </head>
   <body>
     <div class="main">
@@ -176,6 +181,8 @@
           </label>
           <div class="scalebar_callout callout"><p class="callout_text">左右にドラッグすることで、打ち込み画面の幅を変更できます。</p></div>
         </div>
+        <!-- ユーザー情報表示用テンプレート(HTML要素記述)の挿入 -->
+        {% include 'daw/parts/user.html' %}
       </div>
 
       <div class="DAW_main">
@@ -235,12 +242,22 @@
             </div>
         </div>
         <div class="inst_item">
-            <div class="inst_item_left">
+            <div class="inst_item_left inst_item_chord">
+              <div>
                 <p>Chord</p>
                 <div class="mute">
                   <span><i class="fas fa-volume-up"></i></span>
                   <span><i class="fas fa-volume-mute"></i></span>
                 </div>
+              </div>
+              <details>
+                <summary class="chord_inst">ギター</summary>
+                <ul class="chord_inst_list">
+                  <li class="chord_inst_item">ギター</li>
+                  <li class="chord_inst_item">シンセサイザー</li>
+                  <li class="chord_inst_item">ピアノ</li>
+                </ul>
+              </details>
             </div>
             <div class="inst_item_right">
               <div>

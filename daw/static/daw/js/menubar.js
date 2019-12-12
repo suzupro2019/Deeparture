@@ -20,7 +20,7 @@ $(function() { //Enterを押しても送信されないようにする。
   $(".new_save-btn").click(function(){
     var song_name = document.getElementById("song_name_input").value;
     if(song_name.length > 0){
-      save(MIDI_Melody, song_name, artist, key, rhythm_pattern, chord_prog, bpm, volume, pan, effect_selecter).then(response => {
+      save(MIDI_Melody, song_name, artist, key, rhythm_pattern, chord_prog, bpm, volume, pan, effect_selecter, chord_idx).then(response => {
         // ここで成功時の処理
         // console.log('succeed');
         // console.log(response);
@@ -38,7 +38,7 @@ $(function() { //Enterを押しても送信されないようにする。
             getProjectIdByProjectName(song_name).then(id => {
               project_id = id;
               // 以下の処理はデータ更新時とほぼ同じ
-              overwrite(project_id, MIDI_Melody, song_name, artist, key, rhythm_pattern, chord_prog, bpm, volume, pan, effect_selecter).then(response => {
+              overwrite(project_id, MIDI_Melody, song_name, artist, key, rhythm_pattern, chord_prog, bpm, volume, pan, effect_selecter, chord_idx).then(response => {
                 // ここで成功時の処理
                 // console.log('succeed');
                 // console.log(response);
@@ -64,7 +64,7 @@ $(function() { //Enterを押しても送信されないようにする。
   $(".ow_save-btn").click(function(){
     var song_name = document.getElementById("song_name_input").value;
     if(song_name.length > 0){
-      overwrite(project_id, MIDI_Melody, song_name, artist, key, rhythm_pattern, chord_prog, bpm, volume, pan, effect_selecter).then(response => {
+      overwrite(project_id, MIDI_Melody, song_name, artist, key, rhythm_pattern, chord_prog, bpm, volume, pan, effect_selecter, chord_idx).then(response => {
         // ここで成功時の処理
         // console.log('succeed');
         // console.log(response);
@@ -150,7 +150,7 @@ $(function() { //Enterを押しても送信されないようにする。
 
 
 // データ更新用
-function overwrite(id, melody_data, project_name, artist, key, rhythm_pattern, chord_prog, bpm, volume_data, pan_data, effect_data) {
+function overwrite(id, melody_data, project_name, artist, key, rhythm_pattern, chord_prog, bpm, volume_data, pan_data, effect_data, chord_inst_num) {
   return new Promise((resolve, reject) => {
     $.ajax({
       type: 'PUT',
@@ -170,6 +170,7 @@ function overwrite(id, melody_data, project_name, artist, key, rhythm_pattern, c
         'volume_data': JSON.stringify(volume_data),
         'pan_data': JSON.stringify(pan_data),
         'effect_data': JSON.stringify(effect_data),
+        'chord_inst_num': chord_inst_num,
       },
     })
       .then(response => resolve(response))
@@ -178,7 +179,7 @@ function overwrite(id, melody_data, project_name, artist, key, rhythm_pattern, c
 }
 
 // 新規作成用
-function save(melody_data, project_name, artist, key, rhythm_pattern, chord_prog, bpm, volume_data, pan_data, effect_data) {
+function save(melody_data, project_name, artist, key, rhythm_pattern, chord_prog, bpm, volume_data, pan_data, effect_data, chord_inst_num) {
   return new Promise((resolve, reject) => {
     $.ajax({
       type: 'POST',
@@ -198,6 +199,7 @@ function save(melody_data, project_name, artist, key, rhythm_pattern, chord_prog
         'volume_data': JSON.stringify(volume_data),
         'pan_data': JSON.stringify(pan_data),
         'effect_data': JSON.stringify(effect_data),
+        'chord_inst_num': chord_inst_num,
       },
     })
       .then(response => resolve(response))

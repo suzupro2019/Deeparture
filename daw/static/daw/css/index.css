@@ -14,7 +14,11 @@ body {
 }
 a {
     text-decoration: none;
-    color: royalblue;
+    color: #333;
+}
+
+.Top_title{
+  position: relative;
 }
 h1 {
     background-color: #ccc;
@@ -22,22 +26,51 @@ h1 {
     text-align: center;
     padding: 0.8em 0;
 }
+.user_prof{
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background-image: url(/static/daw/images/user_icon.png);
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+  top: 0;
+  right: 0;
+  margin: 15px 30px 15px 15px;
+  border: 1px solid #333;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.user_window{
+  display: none;
+  position:absolute;
+  top: 80px;
+  right: 15px;
+  height: 90px;
+  background-color: #fefefe;
+  border: 1px solid #333;
+  text-align: center;
+}
+.user_name{
+  color: deeppink;
+  margin: 1rem;
+}
+.logout-btn{
+  cursor: pointer;
+}
+.logout-btn:hover{
+  color: skyblue;
+}
 img {
   position:relative;
   text-align: center;
 }
-.user_name {
-    font-size: 1.1em;
-    color: #333;
-    width: 80%;
-    margin:0 auto;
-}
-.project_select {
+.project_select{
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
     width: 80%;
-    margin:0 auto;
+    margin:100 auto;
 }
 .project_item {
     position:relative;
@@ -84,16 +117,15 @@ li{
   list-style: none;
   cursor: pointer;
   width: 80%;
+  height: 2em;
   border-bottom: 1px solid #333;
   margin: 0 0 20px 0;
   padding-bottom: 2px;
   padding-left: 5px;
+  line-height: 2em;
 }
 li:hover{
   color: cornflowerblue;
-}
-li span{
-  width: 50%;
 }
 .pro_name{
   font-size: 20px;
@@ -101,4 +133,9 @@ li span{
 }
 .pro_date{
   margin-left: 8px;
+}
+.pro_close{
+  display: none;
+  float: right;
+  margin-right: 8px;
 }

@@ -14,6 +14,12 @@ li{
   list-style: none;
   margin: 0;
 }
+details li{
+  cursor: pointer;
+}
+details li:hover{
+  opacity: 0.8;
+}
 input{
   cursor: pointer;
 }
@@ -51,6 +57,7 @@ input{
   -moz-user-select: none; /* Firefox */
   -webkit-user-select: none; /* Safari、Chromeなど */
   -ms-user-select: none; /* IE10かららしi */
+  padding: 0 20px;
 }
 
 /*menuテーブル*/
@@ -106,7 +113,6 @@ td.extime{
 .save-button{
   position: relative;
   margin: 0;
-  padding-left: 20px;
 }
 .save-button #save{
   padding: 10px;
@@ -234,7 +240,6 @@ td.extime{
   display: flex;
   flex-direction: column;
   margin: 0;
-  padding-right: 20px;
 }
 .width_scale{
   display: flex;
@@ -274,6 +279,20 @@ label span{
 }
 .inst_item:first-of-type{
   border: 3px solid rgba(255, 20, 147, 0.8);
+}
+.inst_item_chord{
+  display: flex;
+  flex-direction: column;
+}
+.inst_item_chord > div{
+  display: flex;
+  align-items: center;
+  margin: 10px;
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+.inst_item_chord summary{
+  border-bottom: 1px solid #333;
 }
 .inst_item > div{
   border-radius: 2px;
@@ -569,4 +588,37 @@ label span{
 .shortcut_text:before{
   content: "\A";
   white-space: pre;
+}
+
+/*ユーザ*/
+.user_prof{
+  width: 50px;
+  height: 50px;
+  background-image: url(../images/user_icon.png);
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+  border: 1px solid #333;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.user_window{
+  display: none;
+  position:absolute;
+  top: 80px;
+  right: 15px;
+  height: 90px;
+  background-color: #fefefe;
+  border: 1px solid #333;
+  text-align: center;
+}
+.user_name{
+  color: deeppink;
+  margin: 1rem;
+}
+.logout-btn{
+  cursor: pointer;
+}
+.logout-btn:hover{
+  color: skyblue;
 }

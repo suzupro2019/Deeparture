@@ -32,6 +32,8 @@
     <script src="{% static 'daw/js/tutorial/highlightjs-line-numbers.min.js' %}"></script>
     <script src="{% static 'daw/js/tutorial/swiper.min.js' %}"></script>
     <script src="{% static 'daw/js/tutorial/script.js' %}"></script>
+    <!-- ユーザー情報表示用テンプレート(スクリプト記述)の挿入 -->
+    {% include 'daw/parts/user-js.html' %}
   </head>
   <body>
     <div class="main">
@@ -59,6 +61,8 @@
         <h1>Deeparture</h1>
         <p class="start_over"><i class="fas fa-directions"></i></p>
         <p class="start_tutorial"><i class="far fa-question-circle"></i></p>
+        <!-- ユーザー情報表示用テンプレート(HTML要素記述)の挿入 -->
+        {% include 'daw/parts/user.html' %}
       </header>
       <section id="Progress_bar">
           <div class="Progress_number is-active">

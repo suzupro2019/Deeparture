@@ -47,6 +47,7 @@
             for(x=0; x<your_project.length; x++){
               $(".pro_list li").eq(x).append("<span class=\"pro_name\">"+your_project[x].name);
               $(".pro_list li").eq(x).append("<span class=\"pro_date\">"+your_project[x].date);
+              $(".pro_list li").eq(x).append("<span class=\"pro_close\"><i class=\"fas fa-times fa-1x\">");
             }
 
             $(".open_project").click(function(){
@@ -56,23 +57,61 @@
               $(".open_pro_window").css("display", "none");
             });
             $(".pro_list li").click(function(){
-              id = your_project[$(".pro_list li").index(this)].id;
-              url = "{% url 'daw_edit' '88888888-4444-4444-4444-121212121212' %}".replace(/88888888-4444-4444-4444-121212121212/, id);
+              const id = your_project[$(".pro_list li").index(this)].id;
+              const url = "{% url 'daw_edit' '88888888-4444-4444-4444-121212121212' %}".replace(/88888888-4444-4444-4444-121212121212/, id);
               location.href = url;
+            });
+
+            //プロジェクト削除
+            $(".pro_list li").hover(
+              function() {
+                $(".pro_close").eq($(".pro_list li").index(this)).show();
+              },
+              function() {
+                $(".pro_close").eq($(".pro_list li").index(this)).hide();
+              }
+            );
+            $(".pro_close").click(function(e){
+              var pro_idx = $(".pro_close").index(this);
+              if(confirm('本当に"'+your_project[pro_idx].name+'"を削除しますか？')){
+                e.stopPropagation();  // バブリングを止める
+                const id = your_project[pro_idx].id;
+                $.ajax({
+                  type: 'DELETE',
+                  url: '/api/v1/projects/' + id + '/',
+                  headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                  },
+                })
+                  .then(response => {
+                    console.log('deleted');
+                    // NOTE: '204 No Content' つまりリクエストは正常に処理されたが返すものはない、よってresponseはundefinedになる
+                    // console.log(response);
+                    $(".pro_list li").eq(pro_idx).remove();
+                  })
+                  .catch(error => {
+                    // TODO: エラー時の処理も考えるべき
+                    console.log('project delete error');
+                    console.log('status: ' + error.status);
+                    console.log(error);
+                  });
+              }else{
+                return false;
+              }
             });
           });
         });
     </script>
+    <!-- ユーザー情報表示用テンプレート(スクリプト記述)の挿入 -->
+    {% include 'daw/parts/user-js.html' %}
   </head>
     <body>
       <div class="main">
         <header class="Top_title">
           <h1>Project select</h1>
+          <!-- ユーザー情報表示用テンプレート(HTML要素記述)の挿入 -->
+          {% include 'daw/parts/user.html' %}
         </header>
-        <div class="user_name">
-            <p>ようこそ {{ user.get_username }} さん</p>
-            <p><a href="{% url 'account_logout' %}">ログアウト</a></p>
-        </div>
         <div class="project_select">
           <a href="{% url 'daw_start' %}">
             <p class="project_item">Create New

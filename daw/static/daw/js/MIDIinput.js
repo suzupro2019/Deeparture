@@ -761,67 +761,51 @@ jQuery(function($){
 
   /*ショートカット*/
   $(document).on("keydown", function(e){
-    if(e.keyCode == 32){ //space 再生・停止
-      e.preventDefault();
-      music_play();
-    }
-    if(e.keyCode == 13){ //enter 再生位置を初期位置に戻す
-      if(e.preventDefault){
+    if($(".save-window").css("display") == "none"){
+      if(e.keyCode == 32){ //space 再生・停止
         e.preventDefault();
+        music_play();
       }
-      music_back();
-    }
-    if(e.keyCode == 37){ //← 再生位置を戻す
-      e.preventDefault();
-      if(Seekbar_position > 0){
-        if(play_flg){
-          music_stop();
+      if(e.keyCode == 13){ //enter 再生位置を初期位置に戻す
+        if(e.preventDefault){
+          e.preventDefault();
         }
-        Seekbar_back();
-        Measure_calc(Seekbar_position);
+        music_back();
       }
-    }
-    if(e.keyCode == 39){ //→ 再生位置を進める
-      e.preventDefault();
-      if(Seekbar_position < 128){
-        if(play_flg){
-          music_stop();
+      if(e.keyCode == 37){ //← 再生位置を戻す
+        e.preventDefault();
+        if(Seekbar_position > 0){
+          if(play_flg){
+            music_stop();
+          }
+          Seekbar_back();
+          Measure_calc(Seekbar_position);
         }
-        Seekbar_move();
-        Measure_calc(Seekbar_position);
       }
-    }
-    if(e.metaKey && e.keyCode == 89 && Undo_idx+2 < Melody_log.length){ //cmd + y リドゥ
-      if(e.preventDefault){
+      if(e.keyCode == 39){ //→ 再生位置を進める
         e.preventDefault();
+        if(Seekbar_position < 128){
+          if(play_flg){
+            music_stop();
+          }
+          Seekbar_move();
+          Measure_calc(Seekbar_position);
+        }
       }
-      Redo_Melody();
-    }
-    if(e.metaKey && e.keyCode == 90 && Undo_idx >= 0){ //cmd + z アンドゥ
-      if(e.preventDefault){
-        e.preventDefault();
+      if(e.metaKey && e.keyCode == 89 && Undo_idx+2 < Melody_log.length){ //cmd + y リドゥ
+        if(e.preventDefault){
+          e.preventDefault();
+        }
+        Redo_Melody();
       }
-      Undo_Melody();
+      if(e.metaKey && e.keyCode == 90 && Undo_idx >= 0){ //cmd + z アンドゥ
+        if(e.preventDefault){
+          e.preventDefault();
+        }
+        Undo_Melody();
+      }
     }
   })
-
-  const width_step = 1;
-  const height_step = 1;
-  $(".MIDI_input").on("mousewheel", function(e){ //Chrome用ピンチ
-    if (e.ctrlKey) {
-      e.preventDefault();
-      e.stopImmediatePropagation();
-
-      //横幅
-
-      /*measure_resize_width = measure_width * ($(".width_scale_bar").val() / 50);
-      $(".measures").css("width", measure_resize_width);
-      note_resize_width = note_width * ($(".width_scale_bar").val() / 50);
-      $(".notes").css("width", note_resize_width);
-      console.log($(".width_scale_bar").val());*/
-    }
-  });
-
 
   function Redo_Melody(){
     $(".notes").removeClass("highlighted");

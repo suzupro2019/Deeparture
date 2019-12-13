@@ -132,18 +132,20 @@ $(function() { //Enterを押しても送信されないようにする。
 
   //ショートカットキー
   $(document).on("keydown", function(e){
-    if(e.metaKey && e.keyCode == 83){ //Cmd+Sで保存
-      if(e.preventDefault){
-        e.preventDefault();
+    if($(".save-window").css("display") == "none"){
+      if(e.metaKey && e.keyCode == 83){ //Cmd+Sで保存
+        if(e.preventDefault){
+          e.preventDefault();
+        }
+        $(".save-window").show();
       }
-      $(".save-window").show();
-    }
-    //Enterで再生位置を初期位置に戻す >> MIDIinput.jsに記載
-    if(e.keyCode == 32){ //スペースキーで再生・停止
-      if(e.preventDefault){
-        e.preventDefault();
+      //Enterで再生位置を初期位置に戻す >> MIDIinput.jsに記載
+      if(e.keyCode == 32){ //スペースキーで再生・停止
+        if(e.preventDefault){
+          e.preventDefault();
+        }
+        play_change();
       }
-      play_change();
     }
   });
 });

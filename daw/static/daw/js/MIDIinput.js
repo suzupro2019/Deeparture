@@ -187,6 +187,14 @@ jQuery(function($){
 
   $(".chord_inst_item").on("click", function(){
     chord_idx = $(".chord_inst_item").index(this);
+    //楽器のボリューム等の情報を渡す
+    if($(".mute").eq(1).hasClass("active")){
+      Chord_inst[chord_idx].volume.value = -Infinity; //ミュート
+    }else{
+      Chord_inst[chord_idx].volume.value = volume[1]; //ボリューム
+    }
+    Chord_inst[chord_idx].connect(efpan[1]); //エフェクト・パン
+
     Instruments[1] = Chord_inst[chord_idx];
     chord_inst_name = $(".chord_inst_item").eq(chord_idx).html();
     $(".chord_inst").html(chord_inst_name);

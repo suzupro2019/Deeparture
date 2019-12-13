@@ -281,7 +281,7 @@ jQuery(function($){
   });
 
   $(".regeneration_btn").on("click", function(){ //コード再生成btn
-    if(confirm('本当にコード進行の再生成を行いますか。')){
+    if(confirm('本当にコード進行の再生成を行いますか？')){
       generateChordProgression(artist, key.split("/")[0]).then(response => {
         console.log('succeed');
         console.log(response);

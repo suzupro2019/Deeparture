@@ -95,7 +95,7 @@ $(function() { //Enterを押しても送信されないようにする。
   });
 
   $("#back").click(function(){
-    if(confirm('保存していない内容は破棄されますが、本当にプロジェクト選択画面に戻りますか。')){
+    if(confirm('保存していない内容は破棄されますが、本当にプロジェクト選択画面に戻りますか？')){
       window.sessionStorage.clear();
       location.href = index;
     }else{

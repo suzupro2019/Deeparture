@@ -9,28 +9,28 @@ jQuery(function($){
     "Db/Bbm":["C","Db","Eb","F","Gb","Ab","Bb"],
     "D/Bm":  ["C#","D","E","F#","G","A","B"],
     "Eb/Cm": ["C","D","Eb","F","G","Ab","Bb"],
-    "E/C#m": ["C#","D#","E","F#","G#","A","B"],
+    "E/Dbm": ["Cb","Db","E","Fb","Gb","A","B"],
     "F/Dm":  ["C","D","E","F","G","A","Bb"],
     "Gb/Ebm":["Db","Eb","F","Gb","Ab","Bb","B"],
     "G/Em":  ["C","D","E","F#","G","A","B"],
     "Ab/Fm": ["C","Db","Eb","F","G","Ab","Bb"],
-    "A/F#m": ["C#","D","E","F#","G#","A","B"],
+    "A/Gbm": ["Cb","D","E","Fb","Gb","A","B"],
     "Bb/Gm": ["C","D","Eb","F","G","A","Bb"],
-    "B/G#m": ["C#","D#","E","F#","G#","A#","B"]
+    "B/Abm": ["Cb","Db","E","Fb","Gb","Ab","B"]
   };
   const Scales_DoReMi = { //ド〜シという順番 後々反転
     "C/Am":  ["ド","レ","ミ","ファ","ソ","ラ","シ"],
     "Db/Bbm":["ド","レb","ミb","ファ","ソb","ラb","シb"],
     "D/Bm":  ["ド#","レ","ミ","ファ#","ソ","ラ","シ"],
     "Eb/Cm": ["ド","レ","ミb","ファ","ソ","ラb","シb"],
-    "E/C#m": ["ド#","レ#","ミ","ファ#","ソ#","ラ","シ"],
+    "E/Dbm": ["ドb","レb","ミ","ファb","ソb","ラ","シ"],
     "F/Dm":  ["ド","レ","ミ","ファ","ソ","ラ","シb"],
     "Gb/Ebm":["レb","ミb","ファ","ソb","ラb","シb","シ"],
     "G/Em":  ["ド","レ","ミ","ファ#","ソ","ラ","シ"],
     "Ab/Fm": ["ド","レb","ミb","ファ","ソ","ラb","シb"],
-    "A/F#m": ["ド#","レ","ミ","ファ#","ソ#","ラ","シ"],
+    "A/Gbm": ["ドb","レ","ミ","ファb","ソb","ラ","シ"],
     "Bb/Gm": ["ド","レ","ミb","ファ","ソ","ラ","シb"],
-    "B/G#m": ["ド#","レ#","ミ","ファ#","ソ#","ラ#","シ"]
+    "B/Abm": ["ドb","レb","ミ","ファb","ソb","ラb","シ"]
   };
 
   var Keys = {"C":0,"C#":1,"Db":1,"D":2,"D#":3,"Eb":3,"E":4,"F":5,"F#":6,"Gb":6,"G":7,"G#":8,"Ab":8,"A":9,"A#":10,"Bb":10,"B":11};
@@ -51,8 +51,8 @@ jQuery(function($){
   ];
   Mscale_Do.reverse(); //逆から表示するために反転している
   Mscale_C.reverse(); //同上
-  Scales["C/Am"].reverse();Scales["Db/Bbm"].reverse();Scales["D/Bm"].reverse();Scales["Eb/Cm"].reverse();Scales["E/C#m"].reverse();Scales["F/Dm"].reverse();Scales["Gb/Ebm"].reverse();Scales["G/Em"].reverse();Scales["Ab/Fm"].reverse();Scales["A/F#m"].reverse();Scales["Bb/Gm"].reverse();Scales["B/G#m"].reverse();
-  Scales_DoReMi["C/Am"].reverse();Scales_DoReMi["Db/Bbm"].reverse();Scales_DoReMi["D/Bm"].reverse();Scales_DoReMi["Eb/Cm"].reverse();Scales_DoReMi["E/C#m"].reverse();Scales_DoReMi["F/Dm"].reverse();Scales_DoReMi["Gb/Ebm"].reverse();Scales_DoReMi["G/Em"].reverse();Scales_DoReMi["Ab/Fm"].reverse();Scales_DoReMi["A/F#m"].reverse();Scales_DoReMi["Bb/Gm"].reverse();Scales_DoReMi["B/G#m"].reverse();
+  Scales["C/Am"].reverse();Scales["Db/Bbm"].reverse();Scales["D/Bm"].reverse();Scales["Eb/Cm"].reverse();Scales["E/Dbm"].reverse();Scales["F/Dm"].reverse();Scales["Gb/Ebm"].reverse();Scales["G/Em"].reverse();Scales["Ab/Fm"].reverse();Scales["A/Gbm"].reverse();Scales["Bb/Gm"].reverse();Scales["B/Abm"].reverse();
+  Scales_DoReMi["C/Am"].reverse();Scales_DoReMi["Db/Bbm"].reverse();Scales_DoReMi["D/Bm"].reverse();Scales_DoReMi["Eb/Cm"].reverse();Scales_DoReMi["E/Dbm"].reverse();Scales_DoReMi["F/Dm"].reverse();Scales_DoReMi["Gb/Ebm"].reverse();Scales_DoReMi["G/Em"].reverse();Scales_DoReMi["Ab/Fm"].reverse();Scales_DoReMi["A/Gbm"].reverse();Scales_DoReMi["Bb/Gm"].reverse();Scales_DoReMi["B/Abm"].reverse();
 
   //小節
   for(var h = 1; h-1 < notes_measure/16; h++){
@@ -254,7 +254,9 @@ jQuery(function($){
   effect_list[1] = new Tone.Chorus().toMaster(); //コーラス
   effect_list[2] = new Tone.Distortion().toMaster(); //ディストーション
   effect_list[3] = new Tone.FeedbackDelay().toMaster(); //ディレイ
-  effect_list[4] = new Tone.AutoWah(50, 6, -30).toMaster(); //ワウ
+  effect_list[4] = new Tone.AutoWah(50, 8, 0).toMaster(); //ワウ
+  effect_list[4].Q.value = 6;
+  console.log(effect_list[4])
 
   //エフェクトコントロール関数
   function ef_control(inst, idx, load){ //配列の値が1ならエフェクトオン loadなら処理をスキップ

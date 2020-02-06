@@ -1242,3 +1242,22 @@ drum_pattern = {
 ["7:3:2", [""]],
 ["7:3:3", [""]]
 */
+
+Key_demo_melody = [
+  {"time":"0:0:0", "note":"", "duration":"16n"},
+  {"time":"0:0:1", "note":"", "duration":"16n"},
+  {"time":"0:0:2", "note":"", "duration":"16n"},
+  {"time":"0:0:3", "note":"", "duration":"16n"},
+  {"time":"0:1:0", "note":"", "duration":"16n"},
+  {"time":"0:1:1", "note":"", "duration":"16n"},
+  {"time":"0:1:2", "note":"", "duration":"16n"},
+  {"time":"0:1:3", "note":"", "duration":"16n"},
+  {"time":"0:2:0", "note":"", "duration":"16n"},
+  {"time":"0:2:1", "note":"", "duration":"16n"},
+  {"time":"0:2:2", "note":"", "duration":"16n"},
+  {"time":"0:2:3", "note":"", "duration":"16n"},
+  {"time":"0:3:0", "note":"", "duration":"16n"},
+  {"time":"0:3:1", "note":"", "duration":"16n"},
+  {"time":"0:3:2", "note":"", "duration":"16n"},
+  {"time":"0:3:3", "note":"", "duration":"16n"}
+];

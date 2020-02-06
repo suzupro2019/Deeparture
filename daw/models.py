@@ -30,6 +30,8 @@ class Project(models.Model):
     volume_data = JSONField(verbose_name='ボリュームデータ', blank=True, null=True)
     pan_data = JSONField(verbose_name='パンデータ', blank=True, null=True)
     effect_data = JSONField(verbose_name='エフェクトデータ', blank=True, null=True)
+    melody_inst_num = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(1)],
+                                          verbose_name='メロディ楽器番号', default=0)
     chord_inst_num = models.IntegerField(validators=[MinValueValidator(0), MaxValueValidator(2)],
                                          verbose_name='コード楽器番号', default=0)
     created_at = models.DateTimeField(verbose_name='作成日時', default=timezone.now)

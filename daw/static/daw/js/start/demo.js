@@ -12,6 +12,20 @@ var MIDI_Mscale = 72; //音階数 重すぎるのでヤマハ式のC1〜B6まで
 var notes_measure = 128; //notesの列数 (デフォルト>> 16小節 * 16拍 = 256) 重い場合はここを調整してください(コード自動生成等の都合上、ここをいじるだけだとエラーを吐きます)
 var Mscale_Do = ["ド", "ド#", "レ", "レ#", "ミ", "ファ", "ファ#", "ソ", "ソ#", "ラ", "ラ#", "シ"];
 var Mscale_C = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
+const Scales = {
+  "C/Am":  ["C4","D4","E4","F4","G4","A4","B4"],
+  "Db/Bbm":["C#4","D#4","F4","F#4","G#4","A#4","C5"],
+  "D/Bm":  ["D4","E4","F#4","G4","A4","B4","C#5"],
+  "Eb/Cm": ["D#4","F4","G4","G#4","A#4","C5","D5"],
+  "E/Dbm": ["E4","F#4","G#4","A4","B4","C#5","D#5"],
+  "F/Dm":  ["F4","G4","A4","A#4","C5","D5","E5"],
+  "Gb/Ebm":["F#4","G#4","A#4","B4","C#5","D#5","F5"],
+  "G/Em":  ["G4","A4","B4","C5","D5","E5","F#5"],
+  "Ab/Fm": ["G#4","A#4","C5","C#5","D#5","F5","G5"],
+  "A/Gbm": ["A4","B4","C#5","D5","E5","F#5","G#5"],
+  "Bb/Gm": ["A#4","C5","D5","D#5","F5","G5","A5"],
+  "B/Abm": ["B4","C#5","D#5","E5","F#5","G#5","A#5"]
+};
 var Keys = {"C":0,"C#":1,"Db":1,"D":2,"D#":3,"Eb":3,"E":4,"F":5,"F#":6,"Gb":6,"G":7,"G#":8,"Ab":8,"A":9,"A#":10,"Bb":10,"B":11};
 var chord_list =[ //C3のインデックス基準 テンションコードは別で付与 逆順で表示しているため、+-が逆
   [0, 0, 0], //Major
@@ -204,6 +218,27 @@ jQuery(function($){
     Tone.Transport.stop();
     Tone.Transport.cancel();
   }
+
+  function Keys_play(k){
+    Tone.Transport.stop();
+    Tone.Transport.cancel();
+    var i = 0;
+    for(var x=0; x<2; x++){
+      for(var y=0; y<8; y++){
+        if(i < 7){
+          Key_demo_melody[x*8+y].note = Scales[k][i];
+        }
+        i++;
+      }
+      i = 0;
+    }
+    console.log(Key_demo_melody);
+    var Key_melody = new Tone.Part(addChord, Key_demo_melody).start();
+    Tone.Transport.start();
+  }
+  $(".keys_item").on("click", function(){
+    Keys_play($(".keys_is-select").html());
+  });
 
   function Beat_play(){
     if(rhythm_pattern != ""){

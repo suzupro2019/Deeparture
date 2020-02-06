@@ -28,6 +28,7 @@
       var volume = [0, 0, 0, 0]; //全楽器のボリューム情報
       var pan = [0, 0, 0, 0]; //全楽器のパン情報
       var effect_selecter = [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]; //全楽器のエフェクトのオン/オフ情報
+      var melody_idx = 0; //メロディの音源番号
       var chord_idx = 0; //コードの楽器番号
 
       const token = '{{ csrf_token }}';  // CSRF対策
@@ -55,6 +56,7 @@
         var rhythm_pattern = "{{ project.rhythm_pattern }}";
         var chord_prog = "{{ project.chord_prog }}";
         var bpm = parseInt("{{ project.bpm }}");
+        melody_idx = parseInt("{{ project.melody_inst_num }}");
         chord_idx = parseInt("{{ project.chord_inst_num }}");
         // 以下は該当するデータがない(空)の場合,初期値を代入する
         volume = {{ project.volume_data|default:'volume'|safe }};
@@ -70,6 +72,7 @@
       console.log(volume);
       console.log(pan);
       console.log(effect_selecter);
+      console.log('melody_idx: ' + melody_idx);
       console.log('chord_idx: ' + chord_idx);
       </script>
       <!--以下inst_bar-->
@@ -189,13 +192,22 @@
       <div class="DAW_main">
         <section class="inst_bar">
           <div class="inst_item">
-            <div class="inst_item_left">
+            <div class="inst_item_left inst_item_melody">
+              <div>
                 <p>Melody</p>
                 <div class="mute trigger">
                   <span><i class="fas fa-volume-up"></i></span>
                   <span><i class="fas fa-volume-mute"></i></span>
                   <div class="mute_callout callout"><p class="callout_text">ボタンをクリックすることで、そのパートをミュート状態に切り替えることができます。</p></div>
                 </div>
+              </div>
+              <details>
+                <summary class="melody_inst">シンセサイザー</summary>
+                <ul class="melody_inst_list">
+                  <li class="melody_inst_item">シンセサイザー</li>
+                  <li class="melody_inst_item">ボーカロイド</li>
+                </ul>
+              </details>
             </div>
             <div class="inst_item_right">
               <div class="trigger">

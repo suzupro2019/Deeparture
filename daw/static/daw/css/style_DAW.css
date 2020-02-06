@@ -280,6 +280,20 @@ label span{
 .inst_item:first-of-type{
   border: 3px solid rgba(255, 20, 147, 0.8);
 }
+.inst_item_melody{
+  display: flex;
+  flex-direction: column;
+}
+.inst_item_melody > div{
+  display: flex;
+  align-items: center;
+  margin: 10px;
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+.inst_item_melody summary{
+  border-bottom: 1px solid #333;
+}
 .inst_item_chord{
   display: flex;
   flex-direction: column;

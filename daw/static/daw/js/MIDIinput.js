@@ -61,7 +61,7 @@ jQuery(function($){
   //音階
   for(var i = 0; i < MIDI_Mscale; i++){
     var Mscale_index = Math.ceil((MIDI_Mscale-i) / 7); //国際式はi-12 ヤマハ式はi-24
-    $(".Mscale_grid").append("<div class=\"Mscale_notes\"><p>" + Scales_DoReMi[key][i%7] + Mscale_index);
+    $(".Mscale_grid").append("<div class=\"Mscale_notes\"><p>" + Scales[key][i%7] + Mscale_index);
   }
   //入力部分
   for(var j = 0; j < notes_measure; j++){
@@ -142,6 +142,13 @@ jQuery(function($){
   初期状態ではXHRでローカルファイルを持ってくることはセキュリティ上できないため、
   ローカルで起動する場合はWebブラウザの設定が必要。
   Firefoxならstrict_origin_policy = True(既定値) → Falseにする。(非推奨)*/
+  var Vocaloid_sampler = new Tone.Sampler({
+    "C3":"/static/daw/audio/Vocaloid/C3.mp3",
+    "G3":"/static/daw/audio/Vocaloid/G3.mp3",
+    "C4":"/static/daw/audio/Vocaloid/C4.mp3",
+    "G4":"/static/daw/audio/Vocaloid/G4.mp3",
+    "C5":"/static/daw/audio/Vocaloid/C5.mp3"
+  }).toMaster();
   var Piano_sampler = new Tone.Sampler({
     "C3" : "/static/daw/audio/Piano/Piano_C3.wav",
   }, {attack:0.05 ,release:1.0}).toMaster();
@@ -165,8 +172,9 @@ jQuery(function($){
     "E2" : "/static/daw/audio/Drum/OH_E2.wav"
   }).toMaster();
   //メロディ・コード・ベース・ドラムのinst情報
+  const Melody_inst = [polysynth_melody, Vocaloid_sampler];
   const Chord_inst = [Guitar_sampler, polysynth_chord, Piano_sampler]; //コード用楽器リスト
-  var Instruments = [polysynth_melody, Chord_inst[chord_idx], plucksynth, Drum_sampler];
+  var Instruments = [Melody_inst[melody_idx], Chord_inst[chord_idx], plucksynth, Drum_sampler];
 
   function addMelody(time, note) {
     Instruments[0].triggerAttackRelease(note.note, note.duration, time);
@@ -180,6 +188,26 @@ jQuery(function($){
   function addDrum(time, note) {
     Instruments[3].triggerAttackRelease(note, '1n', time);
   }
+
+  //楽器選択(メロディ)
+  var melody_inst_name = $(".melody_inst_item").eq(melody_idx).html();
+  $(".melody_inst").html(melody_inst_name);
+
+  $(".melody_inst_item").on("click", function(){
+    melody_idx = $(".melody_inst_item").index(this);
+    //楽器のボリューム等の情報を渡す
+    if($(".mute").eq(0).hasClass("active")){
+      Melody_inst[melody_idx].volume.value = -Infinity; //ミュート
+    }else{
+      Melody_inst[melody_idx].volume.value = volume[0]; //ボリューム
+    }
+    Melody_inst[melody_idx].connect(efpan[0]); //エフェクト・パン
+
+    Instruments[0] = Melody_inst[melody_idx];
+    melody_inst_name = $(".melody_inst_item").eq(melody_idx).html();
+    $(".melody_inst").html(melody_inst_name);
+    $(".inst_item_melody > details").removeAttr("open");
+  });
 
   //楽器選択(コード)
   var chord_inst_name = $(".chord_inst_item").eq(chord_idx).html();
@@ -215,7 +243,9 @@ jQuery(function($){
     var idx = $(".volume").index(this);
     volume[idx] = $(this).val();
     $('.volume').eq(idx).html(volume[idx]);
-    Instruments[idx].volume.value = volume[idx];
+    if($(".mute").eq(idx).hasClass("active") == false){
+      Instruments[idx].volume.value = volume[idx];
+    }
   });
 
   //ミュート
@@ -323,7 +353,8 @@ jQuery(function($){
     var note_name = note_position % 7;
     var pitch =  Math.ceil((MIDI_Mscale-note_position%MIDI_Mscale) / 7);
     var MIDI_note = Scales[key][note_name] + pitch;
-    var measure_count = $(this).parent().index();
+    var measure_count = $(this).parent().index(".MIDI_notes");
+    console.log("measure:" + measure_count);
     if($(this).hasClass('highlighted') == false){
       Instruments[0].triggerAttackRelease(MIDI_note, '16n');
 
@@ -351,7 +382,7 @@ jQuery(function($){
       var note_name = note_position % 7;
       var pitch =  Math.ceil((MIDI_Mscale-note_position%MIDI_Mscale) / 7);
       var MIDI_note = Scales[key][note_name] + pitch;
-      var measure_count = $(this).parent().index();
+      var measure_count = $(this).parent().index(".MIDI_notes");
       if($(this).hasClass('highlighted') == false){
         Instruments[0].triggerAttackRelease(MIDI_note, '16n');
 
@@ -364,13 +395,15 @@ jQuery(function($){
           console.log("追加");
           console.log(MIDI_Melody);
         }
+        $(this).addClass("highlighted");
       }else{
         var highlight_index = $.inArray(MIDI_note, MIDI_Melody[measure_count].note);
         MIDI_Melody[measure_count].note.splice(highlight_index, 1);
         console.log("削除");
         console.log(MIDI_Melody);
+        $(this).removeClass("highlighted");
       }
-      $(this).toggleClass("highlighted");
+      // $(this).toggleClass("highlighted");
     }
   })
   .bind("selectstart", function () {

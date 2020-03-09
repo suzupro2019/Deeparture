@@ -1,4 +1,4 @@
-/*Layout*/
+/*===Layout===*/
 html{
   font-size: 15px;
 }
@@ -44,7 +44,7 @@ input{
 }
 
 
-/*Menubar*/
+/*===Menubar===*/
 .menu_bar{
   display: flex;
   justify-content: space-between;
@@ -56,7 +56,7 @@ input{
   user-select: none;
   -moz-user-select: none; /* Firefox */
   -webkit-user-select: none; /* Safari、Chromeなど */
-  -ms-user-select: none; /* IE10かららしi */
+  -ms-user-select: none; /* IE10かららしい */
   padding: 0 20px;
 }
 
@@ -109,7 +109,7 @@ td.extime{
   color: white;
 }
 
-/*saveボタン・ウィンドウ*/
+/*Save_button,window*/
 .save-button{
   position: relative;
   margin: 0;
@@ -170,7 +170,7 @@ td.extime{
   opacity: 0.8;
 }
 
-/*helpボタン*/
+/*Help_button*/
 .help-button{
   margin: 0;
 }
@@ -189,7 +189,7 @@ td.extime{
   transition: all .3s ease;
 }
 
-/*backボタン*/
+/*Back_button*/
 .back-button{
   margin: 0;
 }
@@ -205,7 +205,7 @@ td.extime{
   border-radius: 10px;
 }
 
-/*再生停止*/
+/*Play_Stop*/
 .saisei{
   display: flex;
   justify-content: space-between;
@@ -233,9 +233,7 @@ td.extime{
   display: none;
 }
 
-
-
-/*scalebar*/
+/*Scalebar*/
 .scale_bar{
   display: flex;
   flex-direction: column;
@@ -258,7 +256,7 @@ label span{
 }
 
 
-/*instbar*/
+/*===Instbar===*/
 .inst_bar{
   overflow-y: auto;
   width: 20%;
@@ -345,6 +343,8 @@ label span{
   text-align: center;
   padding: 8px 0;
 }
+
+/*Mute_button*/
 .mute{
   display: flex;
   justify-content: center;
@@ -362,27 +362,29 @@ label span{
   transition: all .3s ease;
 }
 .mute:hover{
-    opacity: 0.8;
-    color: aquamarine;
+  opacity: 0.8;
+  color: aquamarine;
 }
 .mute.active {
-    background-color: #ccc;
+  background-color: #ccc;
 }
 .mute > span:last-of-type,
 .mute.active > span:first-of-type{
-    display: none;
+  display: none;
 }
 .mute.active > span:last-of-type {
-    display: inline;
+  display: inline;
 }
 .inst_item_right .pan{
   margin: 8px 0;
   z-index: auto;
 }
 .inst_item_right .volume{
-    width: 70%;
-    margin: 8px auto;
+  width: 70%;
+  margin: 8px auto;
 }
+
+/*Volume*/
 .volume_container > div{
   display: flex;
   flex-flow: nowrap;
@@ -408,7 +410,8 @@ label span{
   background-color: aquamarine;
 }
 
-/*MIDI input*/
+
+/*===MIDI input===*/
 .MIDI_input{
   display: flex;
   flex-wrap: wrap;
@@ -519,7 +522,7 @@ label span{
   margin: 0;
 }
 
-/*ヘルプ*/
+/*===Help_function===*/
 .trigger{
   position: relative;
 }
@@ -604,7 +607,7 @@ label span{
   white-space: pre;
 }
 
-/*ユーザ*/
+/*===User button===*/
 .user_prof{
   width: 50px;
   height: 50px;

@@ -1,38 +1,38 @@
 jQuery(function($){
-  //MIDIinput_grids生成 ?191009
-  var MIDI_Mscale = 42; //音階数 重すぎるのでヤマハ式のC1〜B6まで(72) スケール内の音だけなら7*6=42音
-  var notes_measure = 128; //notesの列数 (デフォルト>> 16小節 * 16拍 = 256) 重い場合はここを調整してください(コード自動生成等の都合上、ここをいじるだけだとエラーを吐きます)
-  var Mscale_Do = ["ド", "ド#", "レ", "レ#", "ミ", "ファ", "ファ#", "ソ", "ソ#", "ラ", "ラ#", "シ"];
-  var Mscale_C = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
-  const Scales = { //C〜Bという順番 後々反転
-    "C/Am":  ["C","D","E","F","G","A","B"],
-    "Db/Bbm":["C","Db","Eb","F","Gb","Ab","Bb"],
-    "D/Bm":  ["C#","D","E","F#","G","A","B"],
-    "Eb/Cm": ["C","D","Eb","F","G","Ab","Bb"],
-    "E/Dbm": ["Cb","Db","E","Fb","Gb","A","B"],
-    "F/Dm":  ["C","D","E","F","G","A","Bb"],
-    "Gb/Ebm":["Db","Eb","F","Gb","Ab","Bb","B"],
-    "G/Em":  ["C","D","E","F#","G","A","B"],
-    "Ab/Fm": ["C","Db","Eb","F","G","Ab","Bb"],
-    "A/Gbm": ["Cb","D","E","Fb","Gb","A","B"],
-    "Bb/Gm": ["C","D","Eb","F","G","A","Bb"],
-    "B/Abm": ["Cb","Db","E","Fb","Gb","Ab","B"]
-  };
-  const Scales_DoReMi = { //ド〜シという順番 後々反転
-    "C/Am":  ["ド","レ","ミ","ファ","ソ","ラ","シ"],
-    "Db/Bbm":["ド","レb","ミb","ファ","ソb","ラb","シb"],
-    "D/Bm":  ["ド#","レ","ミ","ファ#","ソ","ラ","シ"],
-    "Eb/Cm": ["ド","レ","ミb","ファ","ソ","ラb","シb"],
-    "E/Dbm": ["ドb","レb","ミ","ファb","ソb","ラ","シ"],
-    "F/Dm":  ["ド","レ","ミ","ファ","ソ","ラ","シb"],
-    "Gb/Ebm":["レb","ミb","ファ","ソb","ラb","シb","シ"],
-    "G/Em":  ["ド","レ","ミ","ファ#","ソ","ラ","シ"],
-    "Ab/Fm": ["ド","レb","ミb","ファ","ソ","ラb","シb"],
-    "A/Gbm": ["ドb","レ","ミ","ファb","ソb","ラ","シ"],
-    "Bb/Gm": ["ド","レ","ミb","ファ","ソ","ラ","シb"],
-    "B/Abm": ["ドb","レb","ミ","ファb","ソb","ラb","シ"]
-  };
-
+  var MIDI_Mscale = 42; // 音階数 重すぎるのでヤマハ式のC1〜B6まで(72) スケール内の音だけなら7*6=42音
+  var notes_measure = 128; // notesの列数 (デフォルト>> 16小節 * 16拍 = 256) 重い場合はここを調整してください(コード自動生成等の都合上、ここをいじるだけだとエラーを吐きます)
+  var Mscale_Do = ["シ", "ラ#", "ラ", "ソ#", "ソ", "ファ#", "ファ", "ミ", "レ#", "レ", "ド#", "ド"];
+  var Mscale_C = ["B", "A#", "A", "G#", "G", "F#", "F", "E", "D#", "D", "C#", "C"];
+  const Scales = {
+    "C/Am": ["B","A","G","F","E","D","C"],
+    "Db/Bbm": ["Bb","Ab","Gb","F","Eb","Db","C"],
+    "D/Bm": ["B","A","G","F#","E","D","C#"],
+    "Eb/Cm": ["Bb","Ab","G","F","Eb","D","C"],
+    "E/Dbm": ["B","A","Gb","Fb","E","Db","Cb"],
+    "F/Dm": ["Bb","A","G","F","E","D","C"],
+    "Gb/Ebm": ["B","Bb","Ab","Gb","F","Eb","Db"],
+    "G/Em": ["B","A","G","F#","E","D","C"],
+    "Ab/Fm": ["Bb","Ab","G","F","Eb","Db","C"],
+    "A/Gbm": ["B","A","Gb","Fb","E","D","Cb"],
+    "Bb/Gm": ["Bb","A","G","F","Eb","D","C"],
+    "B/Abm": ["B","Ab","Gb","Fb","E","Db","Cb"]
+  }
+  const Scales_DoReMi = {
+    "C/Am": ["シ","ラ","ソ","ファ","ミ","レ","ド"],
+    "Db/Bbm": ["シb","ラb","ソb","ファ","ミb","レb","ド"],
+    "D/Bm": ["シ","ラ","ソ","ファ#","ミ","レ","ド#"],
+    "Eb/Cm": ["シb","ラb","ソ","ファ","ミb","レ","ド"],
+    "E/Dbm": ["シ","ラ","ソb","ファb","ミ","レb","ドb"],
+    "F/Dm": ["シb","ラ","ソ","ファ","ミ","レ","ド"],
+    "Gb/Ebm": ["シ","シb","ラb","ソb","ファ","ミb","レb"],
+    "G/Em": ["シ","ラ","ソ","ファ#","ミ","レ","ド"],
+    "Ab/Fm": ["シb","ラb","ソ","ファ","ミb","レb","ド"],
+    "A/Gbm": ["シ","ラ","ソb","ファb","ミ","レ","ドb"],
+    "Bb/Gm": ["シb","ラ","ソ","ファ","ミb","レ","ド"],
+    "B/Abm": ["シ","ラb","ソb","ファb","ミ","レb","ドb"]
+  }
+  
+  //Cを基準とした音高を数値化した値
   var Keys = {"C":0,"C#":1,"Db":1,"D":2,"D#":3,"Eb":3,"E":4,"F":5,"F#":6,"Gb":6,"G":7,"G#":8,"Ab":8,"A":9,"A#":10,"Bb":10,"B":11};
   var chord_list =[ //C3のインデックス基準 テンションコードは別で付与 逆順で表示しているため、+-が逆
     [0, 0, 0], //Major
@@ -49,21 +49,21 @@ jQuery(function($){
     6, //add9thb
     7 //add9th
   ];
-  Mscale_Do.reverse(); //逆から表示するために反転している
-  Mscale_C.reverse(); //同上
-  Scales["C/Am"].reverse();Scales["Db/Bbm"].reverse();Scales["D/Bm"].reverse();Scales["Eb/Cm"].reverse();Scales["E/Dbm"].reverse();Scales["F/Dm"].reverse();Scales["Gb/Ebm"].reverse();Scales["G/Em"].reverse();Scales["Ab/Fm"].reverse();Scales["A/Gbm"].reverse();Scales["Bb/Gm"].reverse();Scales["B/Abm"].reverse();
-  Scales_DoReMi["C/Am"].reverse();Scales_DoReMi["Db/Bbm"].reverse();Scales_DoReMi["D/Bm"].reverse();Scales_DoReMi["Eb/Cm"].reverse();Scales_DoReMi["E/Dbm"].reverse();Scales_DoReMi["F/Dm"].reverse();Scales_DoReMi["Gb/Ebm"].reverse();Scales_DoReMi["G/Em"].reverse();Scales_DoReMi["Ab/Fm"].reverse();Scales_DoReMi["A/Gbm"].reverse();Scales_DoReMi["Bb/Gm"].reverse();Scales_DoReMi["B/Abm"].reverse();
-
-  //小節
+  
+  
+  /*=== メロディ入力用グリッドの自動生成 ===*/
+  // 小節
   for(var h = 1; h-1 < notes_measure/16; h++){
     $(".Measure_grid").append("<div class=\"measures\"><p>"+h);
   }
-  //音階
+  
+  // 音階
   for(var i = 0; i < MIDI_Mscale; i++){
-    var Mscale_index = Math.ceil((MIDI_Mscale-i) / 7); //国際式はi-12 ヤマハ式はi-24
-    $(".Mscale_grid").append("<div class=\"Mscale_notes\"><p>" + Scales[key][i%7] + Mscale_index);
+    var Mscale_index = Math.ceil((MIDI_Mscale-i) / 7); // 国際式はi-12 ヤマハ式はi-24
+    $(".Mscale_grid").append("<div class=\"Mscale_notes\"><p>" + Scales_DoReMi[key][i%7] + Mscale_index);
   }
-  //入力部分
+  
+  // 入力部分
   for(var j = 0; j < notes_measure; j++){
     $(".note_grid").append("<div class=\"MIDI_notes\">");
     for(var k = 0; k < MIDI_Mscale; k++){
@@ -76,11 +76,13 @@ jQuery(function($){
       }
     }
   }
+  /*=== メロディ入力用グリッドの自動生成 ===*/
 
   //Measure_grid, note_gridの横幅の設定（場合によってはwindow_resizeも追記）
   var MIDIinput_right_width = $(".main").width() - $(".inst_bar").width() - 100;
   $(".Measure_grid").css("width", MIDIinput_right_width);
   $(".note_grid").css("width", MIDIinput_right_width);
+  
   //ウィンドウサイズをリサイズした時
   $(window).resize(function(){
     var MIDIinput_right_width = $(".main").width() - $(".inst_bar").width() - 100;
@@ -134,7 +136,6 @@ jQuery(function($){
 
   //MIDI色切り替え, 音声出力
   var isMouseDown = false; //マウスを押下しているか
-  var isShiftDown = false; //シフトキーをマウス押下時に押下していたか
   var polysynth_melody = new Tone.PolySynth().toMaster(); //Melody用
   var polysynth_chord = new Tone.PolySynth().toMaster(); //Chord用
   var plucksynth = new Tone.PluckSynth().toMaster(); //Bass用
@@ -195,6 +196,7 @@ jQuery(function($){
 
   $(".melody_inst_item").on("click", function(){
     melody_idx = $(".melody_inst_item").index(this);
+    
     //楽器のボリューム等の情報を渡す
     if($(".mute").eq(0).hasClass("active")){
       Melody_inst[melody_idx].volume.value = -Infinity; //ミュート
@@ -215,6 +217,7 @@ jQuery(function($){
 
   $(".chord_inst_item").on("click", function(){
     chord_idx = $(".chord_inst_item").index(this);
+    
     //楽器のボリューム等の情報を渡す
     if($(".mute").eq(1).hasClass("active")){
       Chord_inst[chord_idx].volume.value = -Infinity; //ミュート
@@ -230,8 +233,8 @@ jQuery(function($){
   });
 
 
-  //ボリューム・ミュート・パン
-  //ボリューム
+  /*=== ボリューム・ミュート・パン ===*/
+  /*ボリューム*/
   //ロード処理
   for(var x=0; x<Instruments.length; x++){
     Instruments[x].volume.value = volume[x];
@@ -248,7 +251,7 @@ jQuery(function($){
     }
   });
 
-  //ミュート
+  /*ミュート*/
   $(".mute").on("click", function(){
     var idx = $(".mute").index(this);
     if($(this).hasClass("active")){
@@ -258,7 +261,7 @@ jQuery(function($){
     }
   });
 
-  //パン
+  /*パン*/
   //ロード処理
   var efpan = ["", "", "", ""]; //全楽器のエフェクト・パン
   for(var x=0; x<pan.length; x++){
@@ -276,7 +279,7 @@ jQuery(function($){
     $('.pan').eq(idx).html(efpan[idx])
   });
 
-  //エフェクト
+  /*エフェクト*/
   var effect_list = [
     "", "", "", "", ""
   ];
@@ -311,7 +314,10 @@ jQuery(function($){
       count += 1;
     }
   }
-  //クリック時の処理
+  /*=== ボリューム・ミュート・パン ===*/
+  
+  
+  /*=== メロディ入力部分 クリック時の処理 ===*/
   $(".effect_list > li").on("click", function(){
     $(this).toggleClass("ef_selected");
     var ef_idx = $('.effect_list > li').index(this) % ef_amount;
@@ -430,143 +436,12 @@ jQuery(function($){
     remove_flg = 0;
     ml_line = 0;
     line_count = 0;
-    isShiftDown = false;
   })
+  /*=== クリック時の処理 ===*/
 
+  /*=== メロディの表示 ===*/
   //受け渡された情報からメロディを表示する 読み込みに使用
   //Polysynthは和音に対応 三次元配列で記述可
-  // OPTIMIZE: アプリケーションとしては不要となるため削除すべき
-  var test_Melody = [
-    {"time":"0:0:0", "note":["A5"], "duration":"16n"},
-    {"time":"0:0:1", "note":[""], "duration":"16n"},
-    {"time":"0:0:2", "note":["F5"], "duration":"16n"},
-    {"time":"0:0:3", "note":[], "duration":"16n"},
-    {"time":"0:1:0", "note":["G5"], "duration":"16n"},
-    {"time":"0:1:1", "note":[], "duration":"16n"},
-    {"time":"0:1:2", "note":["A5"], "duration":"16n"},
-    {"time":"0:1:3", "note":[""], "duration":"16n"},
-    {"time":"0:2:0", "note":[], "duration":"16n"},
-    {"time":"0:2:1", "note":[""], "duration":"16n"},
-    {"time":"0:2:2", "note":["F6"], "duration":"16n"},
-    {"time":"0:2:3", "note":[], "duration":"16n"},
-    {"time":"0:3:0", "note":["E6"], "duration":"16n"},
-    {"time":"0:3:1", "note":[], "duration":"16n"},
-    {"time":"0:3:2", "note":["F6"], "duration":"16n"},
-    {"time":"0:3:3", "note":[], "duration":"16n"},
-    {"time":"1:0:0", "note":["E6"], "duration":"16n"},
-    {"time":"1:0:1", "note":[""], "duration":"16n"},
-    {"time":"1:0:2", "note":["F6"], "duration":"16n"},
-    {"time":"1:0:3", "note":[], "duration":"16n"},
-    {"time":"1:1:0", "note":["E6"], "duration":"8n"},
-    {"time":"1:1:1", "note":[], "duration":"16n"},
-    {"time":"1:1:2", "note":[""], "duration":"16n"},
-    {"time":"1:1:3", "note":[""], "duration":"16n"},
-    {"time":"1:2:0", "note":["C6"], "duration":"16n"},
-    {"time":"1:2:1", "note":[""], "duration":"16n"},
-    {"time":"1:2:2", "note":["D6"], "duration":"16n"},
-    {"time":"1:2:3", "note":[], "duration":"16n"},
-    {"time":"1:3:0", "note":["A5"], "duration":"16n"},
-    {"time":"1:3:1", "note":[], "duration":"16n"},
-    {"time":"1:3:2", "note":["G5"], "duration":"16n"},
-    {"time":"1:3:3", "note":[""], "duration":"16n"},
-    {"time":"2:0:0", "note":["F5"], "duration":"16n"},
-    {"time":"2:0:1", "note":[""], "duration":"16n"},
-    {"time":"2:0:2", "note":[""], "duration":"16n"},
-    {"time":"2:0:3", "note":[], "duration":"16n"},
-    {"time":"2:1:0", "note":["G5"], "duration":"16n"},
-    {"time":"2:1:1", "note":[], "duration":"16n"},
-    {"time":"2:1:2", "note":[""], "duration":"16n"},
-    {"time":"2:1:3", "note":[""], "duration":"16n"},
-    {"time":"2:2:0", "note":["F5"], "duration":"16n"},
-    {"time":"2:2:1", "note":[""], "duration":"16n"},
-    {"time":"2:2:2", "note":[""], "duration":"16n"},
-    {"time":"2:2:3", "note":[], "duration":"16n"},
-    {"time":"2:3:0", "note":["G5"], "duration":"16n"},
-    {"time":"2:3:1", "note":[], "duration":"16n"},
-    {"time":"2:3:2", "note":["D5"], "duration":"16n"},
-    {"time":"2:3:3", "note":[], "duration":"16n"},
-    {"time":"3:0:0", "note":[""], "duration":"16n"},
-    {"time":"3:0:1", "note":[""], "duration":"16n"},
-    {"time":"3:0:2", "note":["D5"], "duration":"16n"},
-    {"time":"3:0:3", "note":[], "duration":"16n"},
-    {"time":"3:1:0", "note":["A5"], "duration":"16n"},
-    {"time":"3:1:1", "note":[], "duration":"16n"},
-    {"time":"3:1:2", "note":[""], "duration":"16n"},
-    {"time":"3:1:3", "note":[""], "duration":"16n"},
-    {"time":"3:2:0", "note":["G5"], "duration":"16n"},
-    {"time":"3:2:1", "note":[""], "duration":"16n"},
-    {"time":"3:2:2", "note":[""], "duration":"16n"},
-    {"time":"3:2:3", "note":[], "duration":"16n"},
-    {"time":"3:3:0", "note":["F5"], "duration":"16n"},
-    {"time":"3:3:1", "note":[], "duration":"16n"},
-    {"time":"3:3:2", "note":["G5"], "duration":"16n"},
-    {"time":"3:3:3", "note":[], "duration":"16n"},
-    {"time":"4:0:0", "note":["A5"], "duration":"16n"},
-    {"time":"4:0:1", "note":[""], "duration":"16n"},
-    {"time":"4:0:2", "note":[""], "duration":"16n"},
-    {"time":"4:0:3", "note":[], "duration":"16n"},
-    {"time":"4:1:0", "note":["G5"], "duration":"16n"},
-    {"time":"4:1:1", "note":[], "duration":"16n"},
-    {"time":"4:1:2", "note":["F5"], "duration":"16n"},
-    {"time":"4:1:3", "note":[""], "duration":"16n"},
-    {"time":"4:2:0", "note":[], "duration":"16n"},
-    {"time":"4:2:1", "note":[""], "duration":"16n"},
-    {"time":"4:2:2", "note":[""], "duration":"16n"},
-    {"time":"4:2:3", "note":[], "duration":"16n"},
-    {"time":"4:3:0", "note":["C6"], "duration":"16n"},
-    {"time":"4:3:1", "note":[], "duration":"16n"},
-    {"time":"4:3:2", "note":[""], "duration":"16n"},
-    {"time":"4:3:3", "note":[], "duration":"16n"},
-    {"time":"5:0:0", "note":[""], "duration":"16n"},
-    {"time":"5:0:1", "note":[""], "duration":"16n"},
-    {"time":"5:0:2", "note":["G5"], "duration":"16n"},
-    {"time":"5:0:3", "note":[], "duration":"16n"},
-    {"time":"5:1:0", "note":[""], "duration":"16n"},
-    {"time":"5:1:1", "note":[], "duration":"16n"},
-    {"time":"5:1:2", "note":["A5"], "duration":"16n"},
-    {"time":"5:1:3", "note":[""], "duration":"16n"},
-    {"time":"5:2:0", "note":["A#5"], "duration":"16n"},
-    {"time":"5:2:1", "note":[""], "duration":"16n"},
-    {"time":"5:2:2", "note":["A5"], "duration":"16n"},
-    {"time":"5:2:3", "note":[], "duration":"16n"},
-    {"time":"5:3:0", "note":["G5"], "duration":"16n"},
-    {"time":"5:3:1", "note":[], "duration":"16n"},
-    {"time":"5:3:2", "note":[""], "duration":"16n"},
-    {"time":"5:3:3", "note":[], "duration":"16n"},
-    {"time":"6:0:0", "note":["A5"], "duration":"16n"},
-    {"time":"6:0:1", "note":[""], "duration":"16n"},
-    {"time":"6:0:2", "note":[""], "duration":"16n"},
-    {"time":"6:0:3", "note":[], "duration":"16n"},
-    {"time":"6:1:0", "note":["G5"], "duration":"16n"},
-    {"time":"6:1:1", "note":[], "duration":"16n"},
-    {"time":"6:1:2", "note":["C6"], "duration":"16n"},
-    {"time":"6:1:3", "note":[""], "duration":"16n"},
-    {"time":"6:2:0", "note":["F5"], "duration":"16n"},
-    {"time":"6:2:1", "note":[""], "duration":"16n"},
-    {"time":"6:2:2", "note":[""], "duration":"16n"},
-    {"time":"6:2:3", "note":[], "duration":"16n"},
-    {"time":"6:3:0", "note":["G5"], "duration":"16n"},
-    {"time":"6:3:1", "note":[], "duration":"16n"},
-    {"time":"6:3:2", "note":[""], "duration":"16n"},
-    {"time":"6:3:3", "note":[], "duration":"16n"},
-    {"time":"7:0:0", "note":["F5"], "duration":"16n"},
-    {"time":"7:0:1", "note":[""], "duration":"16n"},
-    {"time":"7:0:2", "note":[""], "duration":"16n"},
-    {"time":"7:0:3", "note":[], "duration":"16n"},
-    {"time":"7:1:0", "note":["G5"], "duration":"16n"},
-    {"time":"7:1:1", "note":[], "duration":"16n"},
-    {"time":"7:1:2", "note":[""], "duration":"16n"},
-    {"time":"7:1:3", "note":[""], "duration":"16n"},
-    {"time":"7:2:0", "note":["A5"], "duration":"16n"},
-    {"time":"7:2:1", "note":[""], "duration":"16n"},
-    {"time":"7:2:2", "note":[""], "duration":"16n"},
-    {"time":"7:2:3", "note":[], "duration":"16n"},
-    {"time":"7:3:0", "note":["F5"], "duration":"16n"},
-    {"time":"7:3:1", "note":[], "duration":"16n"},
-    {"time":"7:3:2", "note":[""], "duration":"16n"},
-    {"time":"7:3:3", "note":[], "duration":"16n"}
-  ];
-
   // CHANGED: メロディデータを引数として受け取るように変更
   function Melody_display(melody){
     for(y=0; y<melody.length; y++){
@@ -598,10 +473,11 @@ jQuery(function($){
     console.log("保存データ読み込み")
     console.log(MIDI_Melody);
   };
-  Melody_display(melody);  // テスト時はtest_Melodyを渡すとよい
+  Melody_display(melody);
+  /*=== メロディの表示 ===*/
 
 
-  //コード(文字列からの生成)
+  /*=== コードの生成(文字列から) ===*/
   var gene_chords = chord_prog.split(" ");
   var bassline = [];
   var key_array = [];
@@ -673,9 +549,10 @@ jQuery(function($){
     }
   }
   console.log(MIDI_chord);
+  /*=== コードの生成 ===*/
 
-  //ベース(コードからの自動生成)
-  /*2拍に1回のペースでルート音を演奏。(C2〜B2)
+  /*=== ベースの生成(コードから) ===*/
+  /*2拍に1回のペースでルート音を演奏。(C2〜B2)\
   分数コードの場合は、該当する音を演奏。*/
   var MIDI_bass = [];
   for(x=0; x<notes_measure/16; x++){ //
@@ -688,12 +565,14 @@ jQuery(function($){
     }
   }
   //console.log(MIDI_bass);
+  /*=== ベースの生成 ===*/
 
 
-
-  //再生処理
+  /*=== 再生用の処理 ===*/
   var Seekbar_position = 0;
-  function Seekbar_move(){ //再生時, →の処理
+  
+  // 再生時, →キーの処理
+  function Seekbar_move(){ 
     if(Seekbar_position > notes_measure){
       Seekbar_position = 0;
       $(".Seekbar").remove();
@@ -706,13 +585,17 @@ jQuery(function($){
     $(".note_grid").scrollLeft(note_resize_width*Seekbar_position);
     Mwidth_control();
   }
-  function Seekbar_back(){ //←の処理
+  
+  // ←キーの処理
+  function Seekbar_back(){ 
     Seekbar_position--;
     $(".Seekbar").remove();
     $(".MIDI_notes").eq(Seekbar_position).before("<div class=\"Seekbar\">");
     $(".note_grid").scrollLeft(note_resize_width*Seekbar_position);
     Mwidth_control();
   }
+  
+  // 再生位置の計算
   var Measure_position = "0:0:0";
   function Measure_calc(num){
     var a = Math.floor(num / 16);
@@ -727,6 +610,8 @@ jQuery(function($){
     $(".exbar .gr").html(Disp_Measure_position);
   }
   var Seek_measure = 0;
+  
+  // シークバーのサイズ分横幅が広がってしまうため、その微調整
   function Mwidth_control(){
     Seek_measure = Math.floor(Seekbar_position / 16);
     $(".measures").css("width",measure_resize_width);
@@ -735,6 +620,7 @@ jQuery(function($){
   $(".exbar .gr").html("1:0:0");
   $(".extime .gr").html("00:00");
 
+  // 再生位置を初期位置に戻す
   function music_back(){
     Tone.Transport.stop();
     Tone.Transport.cancel();
@@ -752,12 +638,13 @@ jQuery(function($){
   $("#backward").on("click", function(){ //シークバーを初期位置に戻すよ
     music_back();
   });
-
+  
+  // 楽曲の再生
   function music_play(){
     Tone.Transport.bpm.value = bpm; //bpm
     if(play_flg == false){
-      var play_MIDI_Melody = []; //再生用に無駄な情報を省いたもの
-      var play_MIDI_Drum =[];
+      var play_MIDI_Melody = []; // Nullなどの要素を省いたもの
+      var play_MIDI_Drum =[]; // Nullなどの要素を省いたもの
       for(z=0; z<drum_pattern[rhythm_pattern].length; z++){ //本来はz<notes_measure
         if(MIDI_Melody[z].note.length > 0 && MIDI_Melody[z].note[0] != ""){
           play_MIDI_Melody.push(MIDI_Melody[z]);
@@ -792,30 +679,36 @@ jQuery(function($){
       music_stop();
     }
   }
+  $("#play").click(function(){
+    music_play();
+  });
+  
+  // 楽曲の停止
   function music_stop(){
     Tone.Transport.stop();
     Tone.Transport.cancel();
   }
 
-  $("#play").click(function(){
-    music_play();
-  });
 
-
-  /*ショートカット*/
+  /*=== ショートカット ===*/
   $(document).on("keydown", function(e){
     if($(".save-window").css("display") == "none"){
-      if(e.keyCode == 32){ //space 再生・停止
+      // 「space」 再生・停止
+      if(e.keyCode == 32){ 
         e.preventDefault();
         music_play();
       }
-      if(e.keyCode == 13){ //enter 再生位置を初期位置に戻す
+      
+      // 「enter」 再生位置を初期位置に戻す
+      if(e.keyCode == 13){ 
         if(e.preventDefault){
           e.preventDefault();
         }
         music_back();
       }
-      if(e.keyCode == 37){ //← 再生位置を戻す
+      
+      // 「←」 再生位置を戻す
+      if(e.keyCode == 37){ 
         e.preventDefault();
         if(Seekbar_position > 0){
           if(play_flg){
@@ -825,7 +718,9 @@ jQuery(function($){
           Measure_calc(Seekbar_position);
         }
       }
-      if(e.keyCode == 39){ //→ 再生位置を進める
+      
+      // 「→」 再生位置を進める
+      if(e.keyCode == 39){
         e.preventDefault();
         if(Seekbar_position < 128){
           if(play_flg){
@@ -835,13 +730,17 @@ jQuery(function($){
           Measure_calc(Seekbar_position);
         }
       }
-      if(e.metaKey && e.keyCode == 89 && Undo_idx+2 < Melody_log.length){ //cmd + y リドゥ
+      
+      // 「cmd + y」 リドゥ
+      if(e.metaKey && e.keyCode == 89 && Undo_idx+2 < Melody_log.length){
         if(e.preventDefault){
           e.preventDefault();
         }
         Redo_Melody();
       }
-      if(e.metaKey && e.keyCode == 90 && Undo_idx >= 0){ //cmd + z アンドゥ
+      
+      //「cmd + z」 アンドゥ
+      if(e.metaKey && e.keyCode == 90 && Undo_idx >= 0){
         if(e.preventDefault){
           e.preventDefault();
         }
@@ -849,13 +748,16 @@ jQuery(function($){
       }
     }
   })
-
+  
+  /*=== リドゥの処理 ===*/
   function Redo_Melody(){
     $(".notes").removeClass("highlighted");
-
+    
+    // 再生情報の差し替え
     Melody_cup = JSON.parse(JSON.stringify(Melody_log[Undo_idx+2]));
     MIDI_Melody = Melody_cup;
 
+    // メロディ表示の差し替え
     for(y=0; y<MIDI_Melody.length; y++){
       if(MIDI_Melody[y].note.length > 0 && MIDI_Melody[y].note[0] != ""){
         for(z=0; z<MIDI_Melody[y].note.length; z++){
@@ -873,12 +775,16 @@ jQuery(function($){
     }
     Undo_idx++;
   }
+  
+  /*===  アンドゥの処理 ===*/
   function Undo_Melody(){
     $(".notes").removeClass("highlighted");
-
+    
+    // 再生情報の差し替え
     Melody_cup = JSON.parse(JSON.stringify(Melody_log[Undo_idx]));
     MIDI_Melody = Melody_cup;
-
+    
+    // メロディ表示の差し替え
     for(y=0; y<MIDI_Melody.length; y++){
       if(MIDI_Melody[y].note.length > 0 && MIDI_Melody[y].note[0] != ""){
         for(z=0; z<MIDI_Melody[y].note.length; z++){
@@ -900,4 +806,5 @@ jQuery(function($){
   //起動後の初期状態をMelody_logに入れておく
   Melody_cup = JSON.parse(JSON.stringify(MIDI_Melody));
   Melody_log.push(Melody_cup);
+  /*=== 再生用の処理 ===*/
 });

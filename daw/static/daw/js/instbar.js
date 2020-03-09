@@ -1,3 +1,4 @@
+//Mute
 $(function(){
   $('.mute').on('click', function(event){
     event.preventDefault();

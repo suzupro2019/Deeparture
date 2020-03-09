@@ -1,23 +1,25 @@
 const add = (x) => {
   return (x) && parseInt(x);
 }
-/*saveボタン・ウィンドウ*/
-$(function() { //Enterを押しても送信されないようにする。
+
+$(function() {
+  //Enterを押しても送信されないようにする。
   $(document).on("keypress", "input:not(.allow_submit)", function(event) {
     return event.which !== 13;
   });
-
+  
+  /*=== セーブボタン・ウィンドウ ===*/
   var save_flg = 0;
-  $("#save").click(function(){
+  $("#save").on("click", function(){
     $(".save-window").show();
   });
-  $(".times").click(function(){
+  $(".times").on("click", function(){
     $(".save-window").hide();
   });
   if(project_name) {
     document.getElementById('song_name_input').value = project_name;
   }
-  $(".new_save-btn").click(function(){
+  $(".new_save-btn").on("click", function(){
     var song_name = document.getElementById("song_name_input").value;
     if(song_name.length > 0){
       save(MIDI_Melody, song_name, artist, key, rhythm_pattern, chord_prog, bpm, volume, pan, effect_selecter, melody_idx, chord_idx).then(response => {
@@ -61,7 +63,7 @@ $(function() { //Enterを押しても送信されないようにする。
       alert("ファイル名を入力してください。");
     }
   });
-  $(".ow_save-btn").click(function(){
+  $(".ow_save-btn").on("click", function(){
     var song_name = document.getElementById("song_name_input").value;
     if(song_name.length > 0){
       overwrite(project_id, MIDI_Melody, song_name, artist, key, rhythm_pattern, chord_prog, bpm, volume, pan, effect_selecter, melody_idx, chord_idx).then(response => {
@@ -82,8 +84,8 @@ $(function() { //Enterを押しても送信されないようにする。
     }
   });
 
-  /*helpボタン*/
-  $('#help').click(function() {
+  /*=== ヘルプボタン ===*/
+  $('#help').on("click", function() {
     if(help_flg == false){
       $('#help').css('background','#ffff7f');
       help_flg = true;
@@ -94,7 +96,8 @@ $(function() { //Enterを押しても送信されないようにする。
     }
   });
 
-  $("#back").click(function(){
+  /*=== バックボタン ===*/
+  $("#back").on("click", function(){
     if(confirm('保存していない内容は破棄されますが、本当にプロジェクト選択画面に戻りますか？')){
       window.sessionStorage.clear();
       location.href = index;
@@ -103,7 +106,7 @@ $(function() { //Enterを押しても送信されないようにする。
     }
   });
 
-  /*再生ボタンと停止ボタン*/
+  /*=== 再生・停止ボタン ===*/
   function play_change(){
     if(play_flg == false){
       $('.play-btn').hide();
@@ -115,32 +118,32 @@ $(function() { //Enterを押しても送信されないようにする。
       play_flg = false;
     }
   }
-  $('#play').click(function() {
+  $('#play').on("click", function() {
     play_change();
   });
 
-  /*作曲情報バー*/
+  /*=== 楽曲情報 ===*/
   $('.artist').html(artist);
   $('.key').html(key);
 
-  //BPM
+  /*=== BPM ===*/
   $('.bpm_value').html(bpm);
   $('.bpm_slider').on('input change', function() {
     bpm = $(this).val();
     $('.bpm_value').html(bpm);
   });
 
-  //ショートカットキー
+  /*=== ショートカットキー ===*/
   $(document).on("keydown", function(e){
     if($(".save-window").css("display") == "none"){
-      if(e.metaKey && e.keyCode == 83){ //Cmd+Sで保存
+      if(e.metaKey && e.keyCode == 83){ // Cmd+Sで保存
         if(e.preventDefault){
           e.preventDefault();
         }
         $(".save-window").show();
       }
-      //Enterで再生位置を初期位置に戻す >> MIDIinput.jsに記載
-      if(e.keyCode == 32){ //スペースキーで再生・停止
+      // Enterで再生位置を初期位置に戻す >> MIDIinput.jsに記載
+      if(e.keyCode == 32){ // スペースキーで再生・停止
         if(e.preventDefault){
           e.preventDefault();
         }

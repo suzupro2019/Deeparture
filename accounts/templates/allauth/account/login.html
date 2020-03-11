@@ -4,41 +4,46 @@
 
 <!DOCTYPE html>
 <html>
- <head>
+  <head>
     <meta charset="utf-8">
     <title>ログイン</title>
     <link rel="stylesheet" href="{% static 'accounts/css/style_login.css' %}">
-</head>
-<div class="login-container">
-  <div class="login-triangle"></div>
+  </head>
+  <p class="Lets_message">
+    さあ、Deepartureで<br>
+    作曲への第一歩を踏み出しましょう!
+  </p>
+  <div class="login-container">
+   
+    <div class="login-triangle"></div>
+    <h2 class="login-header">ログイン</h2>
 
-  <h2 class="login-header">ログイン</h2>
-
-  <form class="login" method="POST" action="{% url 'account_login' %}">
-    {% csrf_token %}
-    {% if form.errors %}
-      <div class="errorlist">
-        <p>
-          {% for errors in form.errors.values %}
-            {% for error in errors %}
-              {{ error }}<br>
+    <form class="login" method="POST" action="{% url 'account_login' %}">
+      {% csrf_token %}
+      {% if form.errors %}
+        <div class="errorlist">
+          <p>
+            {% for errors in form.errors.values %}
+              {% for error in errors %}
+                {{ error }}<br>
+              {% endfor %}
             {% endfor %}
-          {% endfor %}
-        </p>
-      </div>
-    {% endif %}
-    <p>{{ form.login }}</p>
-    <p>{{ form.password }}</p>
-    {% if redirect_field_value %}
-      <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-    {% endif %}
-    <!-- パスワード再設定ページへのリンク
-    <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
-    -->
-    <p><input type="submit" value="{% trans 'Sign In' %}"></p>
-  </form>
+          </p>
+        </div>
+      {% endif %}
+      <p>{{ form.login }}</p>
+      <p>{{ form.password }}</p>
+      {% if redirect_field_value %}
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+      {% endif %}
+      <!-- パスワード再設定ページへのリンク
+      <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+      -->
+      <p><input type="submit" value="{% trans 'Sign In' %}"></p>
+    </form>
 
-  <div class="form-footer">
-    <p><a href="{% url 'account_signup' %}">アカウント作成</a></p>
+    <div class="form-footer">
+      <p><a href="{% url 'account_signup' %}">アカウント作成</a></p>
+    </div>
   </div>
-</div>
+</html>

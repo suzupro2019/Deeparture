@@ -4,39 +4,43 @@
 
 <!DOCTYPE html>
 <html>
- <head>
+   <head>
     <meta charset="utf-8">
     <title>アカウント作成</title>
     <link rel="stylesheet" href="{% static 'accounts/css/style_login.css' %}">
-</head>
-<div class="signup-container">
-  <div class="signup-triangle"></div>
+  </head>
+  <p class="Lets_message">
+    さあ、Deepartureで<br>
+    作曲への第一歩を踏み出しましょう!
+  </p>
+  <div class="signup-container">
 
-  <h2 class="signup-header">アカウント作成</h2>
+    <h2 class="signup-header">アカウント作成</h2>
 
-  <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
-    {% csrf_token %}
-    {% if form.errors %}
-      <div class="errorlist">
-        <p>
-          {% for errors in form.errors.values %}
-            {% for error in errors %}
-              {{ error }}<br>
+    <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+      {% csrf_token %}
+      {% if form.errors %}
+        <div class="errorlist">
+          <p>
+            {% for errors in form.errors.values %}
+              {% for error in errors %}
+                {{ error }}<br>
+              {% endfor %}
             {% endfor %}
-          {% endfor %}
-        </p>
-      </div>
-    {% endif %}
-    <p>{{ form.email }}</p>
-    <p>{{ form.password1 }}</p>
-    <p>{{ form.password2 }}</p>
-    {% if redirect_field_value %}
-      <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-    {% endif %}
-    <p><input type="submit" value="{% trans 'Sign Up' %}"></p>
-  </form>
+          </p>
+        </div>
+      {% endif %}
+      <p>{{ form.email }}</p>
+      <p>{{ form.password1 }}</p>
+      <p>{{ form.password2 }}</p>
+      {% if redirect_field_value %}
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+      {% endif %}
+      <p><input type="submit" value="{% trans 'Sign Up' %}"></p>
+    </form>
 
-  <div class="form-footer">
-    <p><a href="{% url 'account_login' %}">ログイン</a></p>
+    <div class="form-footer">
+      <p><a href="{% url 'account_login' %}">ログイン</a></p>
+    </div>
   </div>
-</div>
+</html>

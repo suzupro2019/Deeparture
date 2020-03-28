@@ -1,3 +1,5 @@
+// リズムパターンのデフォルト値を記述
+
 chord_stroke = {
   A:[
     {"time":"0:0:0", "note":[47, 43, 40], "duration":"8n"},
@@ -1243,6 +1245,7 @@ drum_pattern = {
 ["7:3:3", [""]]
 */
 
+// キーのデモメロディ用配列
 Key_demo_melody = [
   {"time":"0:0:0", "note":"", "duration":"16n"},
   {"time":"0:0:1", "note":"", "duration":"16n"},

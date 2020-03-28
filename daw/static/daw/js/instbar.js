@@ -1,4 +1,6 @@
-//Mute
+// インストバーの表示のスクリプト
+
+//ミュート
 $(function(){
   $('.mute').on('click', function(event){
     event.preventDefault();
@@ -6,7 +8,7 @@ $(function(){
   });
 });
 
-//knob
+//パン用ノブ
 window.inputKnobsOptions={
   fgcolor:"#333",
   bgcolor:"#ccc",

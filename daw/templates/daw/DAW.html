@@ -29,7 +29,7 @@
       var pan = [0, 0, 0, 0]; //全楽器のパン情報
       var effect_selecter = [[0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0]]; //全楽器のエフェクトのオン/オフ情報
       var melody_idx = 0; //メロディの音源番号
-      var chord_idx = 0; //コードの楽器番号
+      var chord_idx = 1; //コードの楽器番号
 
       const token = '{{ csrf_token }}';  // CSRF対策
       const index = "{% url 'index' %}";  // ページ遷移時に使用

@@ -1,8 +1,9 @@
+// メロディ入力全般のスクリプト
+
 jQuery(function($){
-  var MIDI_Mscale = 42; // 音階数 重すぎるのでヤマハ式のC1〜B6まで(72) スケール内の音だけなら7*6=42音
-  var notes_measure = 128; // notesの列数 (デフォルト>> 16小節 * 16拍 = 256) 重い場合はここを調整してください(コード自動生成等の都合上、ここをいじるだけだとエラーを吐きます)
-  var Mscale_Do = ["シ", "ラ#", "ラ", "ソ#", "ソ", "ファ#", "ファ", "ミ", "レ#", "レ", "ド#", "ド"];
-  var Mscale_C = ["B", "A#", "A", "G#", "G", "F#", "F", "E", "D#", "D", "C#", "C"];
+  const MIDI_Mscale = 42; // 音階数 重すぎるのでヤマハ式のC1〜B6まで(72) スケール内の音だけなら7*6=42音
+  const notes_measure = 128; // notesの列数 (デフォルト>> 8小節 * 16拍 = 128)
+  const Mscale_C = ["B", "A#", "A", "G#", "G", "F#", "F", "E", "D#", "D", "C#", "C"];
   const Scales = {
     "C/Am": ["B","A","G","F","E","D","C"],
     "Db/Bbm": ["Bb","Ab","Gb","F","Eb","Db","C"],
@@ -33,8 +34,8 @@ jQuery(function($){
   }
   
   //Cを基準とした音高を数値化した値
-  var Keys = {"C":0,"C#":1,"Db":1,"D":2,"D#":3,"Eb":3,"E":4,"F":5,"F#":6,"Gb":6,"G":7,"G#":8,"Ab":8,"A":9,"A#":10,"Bb":10,"B":11};
-  var chord_list =[ //C3のインデックス基準 テンションコードは別で付与 逆順で表示しているため、+-が逆
+  const Keys = {"C":0,"C#":1,"Db":1,"D":2,"D#":3,"Eb":3,"E":4,"F":5,"F#":6,"Gb":6,"G":7,"G#":8,"Ab":8,"A":9,"A#":10,"Bb":10,"B":11};
+  const chord_list =[ //C3のインデックス基準 テンションコードは別で付与 逆順で表示しているため、+-が逆
     [0, 0, 0], //Major
     [0, 1, 0], //Minor
     [0, 2, 0], //sus2
@@ -42,15 +43,16 @@ jQuery(function($){
     [0, 0, -1], //aug
     [0, 1, 1] //dim
   ]
-  var Tensions = [
-    2, //6th
-    3, //7th
-    4, //M7th
-    6, //add9thb
-    7 //add9th
+  const Tensions = [ //テンションノート コードの第5音からの音高
+    2, //6
+    3, //7
+    4, //Mh
+    6, //add9b
+    7 //add9
   ];
   
   
+  /*========== DOM要素の制御 ==========*/
   /*=== メロディ入力用グリッドの自動生成 ===*/
   // 小節
   for(var h = 1; h-1 < notes_measure/16; h++){
@@ -77,8 +79,8 @@ jQuery(function($){
     }
   }
   /*=== メロディ入力用グリッドの自動生成 ===*/
-
-  //Measure_grid, note_gridの横幅の設定（場合によってはwindow_resizeも追記）
+  
+  //Measure_grid, note_gridの横幅の設定
   var MIDIinput_right_width = $(".main").width() - $(".inst_bar").width() - 100;
   $(".Measure_grid").css("width", MIDIinput_right_width);
   $(".note_grid").css("width", MIDIinput_right_width);
@@ -90,7 +92,8 @@ jQuery(function($){
     $(".note_grid").css("width", MIDIinput_right_width);
   });
 
-  //スクロール連動 小節, 音階
+  
+  /*=== スクロール連動 小節, 音階 ===*/
   $(".note_grid").scroll(function() {
     $(".Measure_grid").scrollLeft(
       $(".note_grid").scrollLeft()
@@ -110,8 +113,9 @@ jQuery(function($){
       $(".Mscale_grid").scrollTop()
     );
   });
+  /*=== スクロール連動 小節, 音階 ===*/
 
-  //notes縦横可変
+  /*=== メロディ入力部分のサイズ変更 ===*/
   const measure_width = 800; //measuresの最低幅 ページ読み込み時の初期サイズは1600px
   const note_width = 50; //notesの最低幅 ページ読み込み時の初期サイズは100px
   const note_height = 20; //notesの最低高さ ページ読み込み時の初期サイズは40px
@@ -133,7 +137,10 @@ jQuery(function($){
     $(".Mscale_notes").css("height", note_resize_height);
     $(".notes").css("height", note_resize_height);
   });
+  /*=== メロディ入力部分のサイズ変更 ===*/
+  /*========== DOM要素の制御 ==========*/
 
+  /*========== DOM要素の制御 ==========*/
   //MIDI色切り替え, 音声出力
   var isMouseDown = false; //マウスを押下しているか
   var polysynth_melody = new Tone.PolySynth().toMaster(); //Melody用

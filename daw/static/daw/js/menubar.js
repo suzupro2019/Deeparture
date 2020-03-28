@@ -1,3 +1,5 @@
+// メニューバーのスクリプト
+
 const add = (x) => {
   return (x) && parseInt(x);
 }
